@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# test screenshots
+public/audit-*.png
+public/fresh-*.png
+
+# raw archives & heavy video files (exceeding GitHub 100MB limit)
+raw/
+*.mp4
+*.mov
+*.MOV

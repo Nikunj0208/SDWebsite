@@ -1,0 +1,271 @@
+"use client"
+
+import Image from "next/image"
+import { motion } from "framer-motion"
+import { NumberTicker } from "@/components/magicui/number-ticker"
+import { FadeIn, StaggerContainer, staggerItem } from "@/components/ui/motion"
+import {
+  ShieldCheck,
+  CheckCircle2,
+  Calendar,
+  Sparkles,
+  ArrowRight,
+  Building2,
+  Users,
+  Clock,
+  Layers,
+  MapPin,
+  Check,
+  Percent,
+  KeyRound,
+  FileCheck,
+  Landmark,
+} from "lucide-react"
+
+interface LegacySectionProps {
+  onOpenVisitModal?: (project?: string) => void
+}
+
+export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
+  const handleScheduleVisit = () => {
+    if (onOpenVisitModal) {
+      onOpenVisitModal("Silverstone Ready Projects")
+    } else {
+      const el = document.querySelector("#contact")
+      if (el) el.scrollIntoView({ behavior: "smooth" })
+    }
+  }
+
+  return (
+    <section id="why-ready-to-live" className="relative py-20 lg:py-28 bg-[#FAF8F5] overflow-hidden border-b border-[#E6E0D6]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-20">
+        {/* ========================================================= */}
+        {/* SHREEPAD-STYLE "ABOUT GROUP" SPLIT EDITORIAL SECTION      */}
+        {/* ========================================================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+          {/* Left Column: Asymmetric Architectural Photo Collage */}
+          <div className="lg:col-span-6 relative">
+            <FadeIn direction="right" duration={0.8}>
+              <div className="grid grid-cols-12 gap-3 relative">
+                {/* Main Large Image */}
+                <div className="col-span-8 relative h-[380px] sm:h-[440px] rounded-3xl overflow-hidden border border-[#E6E0D6] shadow-xl group">
+                  <Image
+                    src="/images/springhill-campus.jpeg"
+                    alt="Silverstone Ready to Live Campus Surat"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 450px"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-stone-950/20 to-transparent" />
+                  <div className="absolute bottom-5 left-5 right-5 text-white">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#DFC8A7] block mb-1">
+                      DELIVERED ARCHITECTURE
+                    </span>
+                    <h4 className="font-serif font-bold text-xl leading-tight">
+                      Spring Hill & Raj Mahel Enclaves
+                    </h4>
+                  </div>
+                </div>
+
+                {/* Secondary Offset Stacked Images */}
+                <div className="col-span-4 space-y-3">
+                  <div className="relative h-[185px] sm:h-[212px] rounded-2xl overflow-hidden border border-[#E6E0D6] shadow-md group">
+                    <Image
+                      src="/images/rajmahel/fountain.jpg"
+                      alt="Central Water Fountain Raj Mahel"
+                      fill
+                      sizes="200px"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                  </div>
+
+                  <div className="relative h-[185px] sm:h-[216px] rounded-2xl overflow-hidden border border-[#E6E0D6] shadow-md group">
+                    <Image
+                      src="/images/applewood/applewood-1.jpg"
+                      alt="Applewood Homes Surat"
+                      fill
+                      sizes="200px"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                  </div>
+                </div>
+
+                {/* Floating Trust Badge */}
+                <div className="absolute -bottom-5 left-6 bg-[#18181B] text-white p-4 rounded-2xl border border-stone-700 shadow-2xl flex items-center gap-3.5 z-10 transition-transform hover:scale-105">
+                  <div className="size-11 rounded-xl bg-[#B4833E]/20 text-[#DFC8A7] flex items-center justify-center font-bold">
+                    <ShieldCheck className="size-6" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-white uppercase tracking-wider">
+                      100% BU/OC Approved
+                    </div>
+                    <div className="text-[11px] text-stone-400">
+                      Zero Possession Delay Risk
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+
+          {/* Right Column: Editorial Copy */}
+          <div className="lg:col-span-6 space-y-6">
+            <FadeIn direction="left" duration={0.6}>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF4EA] border border-[#DFC8A7] text-[11px] font-bold tracking-[0.2em] uppercase text-[#B4833E]">
+                <span>THE SILVERSTONE STANDARD</span>
+              </div>
+            </FadeIn>
+
+            <FadeIn direction="left" delay={0.1} duration={0.7}>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#18181B] tracking-tight leading-[1.14]">
+                Why Wait 4 Years for a Render When Your Home is Ready Today?
+              </h2>
+            </FadeIn>
+
+            <FadeIn direction="left" delay={0.2} duration={0.7}>
+              <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
+                For over a decade, Silverstone Developers has stood apart in Surat by delivering certainty instead of promises. While conventional builders sell 3D renders with years of construction delay, <strong className="text-stone-900 font-semibold">every Silverstone residence is already completed, BU-certified, and ready for immediate key handover</strong>.
+              </p>
+            </FadeIn>
+
+            <FadeIn direction="left" delay={0.3} duration={0.7}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 text-xs text-stone-800">
+                <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-colors">
+                  <Percent className="size-4 text-[#15803D] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="block text-stone-900">0% GST Surcharge</strong>
+                    <span className="text-stone-500">Save 5% tax on ready BU inventory</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-colors">
+                  <KeyRound className="size-4 text-[#15803D] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="block text-stone-900">Zero Rent & EMI Drain</strong>
+                    <span className="text-stone-500">Immediate move-in, stop paying rent</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-colors">
+                  <FileCheck className="size-4 text-[#15803D] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="block text-stone-900">Verified Space & Sunlight</strong>
+                    <span className="text-stone-500">Inspect real room sizes & cross-ventilation</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-colors">
+                  <Landmark className="size-4 text-[#15803D] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="block text-stone-900">Pre-Approved Bank Loans</strong>
+                    <span className="text-stone-500">Fast sanction from SBI, HDFC & ICICI</span>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn direction="left" delay={0.4} duration={0.7}>
+              <div className="flex flex-wrap items-center gap-3.5 pt-2">
+                <button
+                  onClick={handleScheduleVisit}
+                  className="inline-flex items-center gap-2 bg-[#B4833E] hover:bg-[#8F642B] text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-full shadow-md transition-transform active:scale-95 cursor-pointer group"
+                >
+                  <Calendar className="size-4" />
+                  <span>Schedule Site Inspection</span>
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                </button>
+
+                <a
+                  href="#projects"
+                  className="inline-flex items-center gap-1.5 px-5 py-3.5 rounded-full border border-stone-800 bg-white text-stone-900 hover:bg-stone-900 hover:text-white text-xs font-bold uppercase tracking-wider transition-colors"
+                >
+                  <span>Explore 4 Campuses →</span>
+                </a>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+
+        {/* ========================================================= */}
+        {/* SHREEPAD-STYLE LEGACY STAT COUNTERS SECTION (#counter)    */}
+        {/* ========================================================= */}
+        <div id="counter" className="pt-10 border-t border-[#E6E0D6]">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {/* Stat 1: 100% */}
+            <FadeIn delay={0.1} duration={0.6}>
+              <div className="p-6 sm:p-7 rounded-3xl bg-white border border-[#E6E0D6] shadow-xs text-center sm:text-left hover:border-[#B4833E] transition-all hover:shadow-lg group">
+                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#15803D] block mb-2">
+                  LEGAL COMPLETION
+                </span>
+                <div className="text-4xl sm:text-6xl font-serif font-black text-[#15803D] tracking-tight">
+                  <NumberTicker value={100} suffix="%" />
+                </div>
+                <h4 className="text-sm font-bold text-stone-900 mt-2">
+                  BU / OC Certified
+                </h4>
+                <p className="text-xs text-stone-500 mt-0.5">
+                  100% Ready Possession Handover
+                </p>
+              </div>
+            </FadeIn>
+
+            {/* Stat 2: 500+ */}
+            <FadeIn delay={0.2} duration={0.6}>
+              <div className="p-6 sm:p-7 rounded-3xl bg-white border border-[#E6E0D6] shadow-xs text-center sm:text-left hover:border-[#B4833E] transition-all hover:shadow-lg group">
+                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B4833E] block mb-2">
+                  SETTLED RESIDENTS
+                </span>
+                <div className="text-4xl sm:text-6xl font-serif font-black text-[#18181B] tracking-tight">
+                  <NumberTicker value={500} suffix="+" />
+                </div>
+                <h4 className="text-sm font-bold text-stone-900 mt-2">
+                  Happy Families
+                </h4>
+                <p className="text-xs text-stone-500 mt-0.5">
+                  Thriving Surat Gated Communities
+                </p>
+              </div>
+            </FadeIn>
+
+            {/* Stat 3: 0 Days */}
+            <FadeIn delay={0.3} duration={0.6}>
+              <div className="p-6 sm:p-7 rounded-3xl bg-white border border-[#E6E0D6] shadow-xs text-center sm:text-left hover:border-[#B4833E] transition-all hover:shadow-lg group">
+                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#15803D] block mb-2">
+                  CONSTRUCTION RISK
+                </span>
+                <div className="text-4xl sm:text-6xl font-serif font-black text-[#18181B] tracking-tight">
+                  <NumberTicker value={0} suffix=" Days" />
+                </div>
+                <h4 className="text-sm font-bold text-stone-900 mt-2">
+                  Waiting Period
+                </h4>
+                <p className="text-xs text-stone-500 mt-0.5">
+                  Keys Handed Over Immediately
+                </p>
+              </div>
+            </FadeIn>
+
+            {/* Stat 4: 4+ Flagship */}
+            <FadeIn delay={0.4} duration={0.6}>
+              <div className="p-6 sm:p-7 rounded-3xl bg-white border border-[#E6E0D6] shadow-xs text-center sm:text-left hover:border-[#B4833E] transition-all hover:shadow-lg group">
+                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B4833E] block mb-2">
+                  SURAT PORTFOLIO
+                </span>
+                <div className="text-4xl sm:text-6xl font-serif font-black text-[#B4833E] tracking-tight">
+                  <NumberTicker value={4} suffix="+" />
+                </div>
+                <h4 className="text-sm font-bold text-stone-900 mt-2">
+                  Delivered Campuses
+                </h4>
+                <p className="text-xs text-stone-500 mt-0.5">
+                  Spring Hill, Raj Mahel, Applewood & Mahel
+                </p>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+export default LegacySection
