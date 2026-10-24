@@ -13,60 +13,21 @@ import {
   ChevronRight,
   ArrowDown,
   Sparkles,
+  ShieldCheck,
 } from "lucide-react"
 import { ARCHITECTURAL_EASE } from "@/components/ui/architectural-reveal"
 import { EditorialHeading } from "@/components/ui/editorial-heading"
 import Magnet from "@/components/Magnet"
+import { HERO_SLIDES, HERO_TRUST_PILL } from "@/constants/silverstoneData"
+import { useLanguage } from "@/context/LanguageContext"
 
 interface HeroSliderProps {
   onOpenVisitModal: (project?: string) => void
   onFilterChange?: (filters: { locality: string; configuration: string; status: string }) => void
 }
 
-const SLIDES = [
-  {
-    projectId: "spring-hill",
-    projectName: "Spring Hill",
-    tag: "SPRING HILL • READY TO LIVE",
-    headline: "Walk Into Your Actual Apartment Today. Zero Waiting. Zero Construction Risk.",
-    subhead: "Zero Waiting • 100% BU/OC Clear Handover • Pal Gauravpath, Surat",
-    startingPrice: "From ₹47 Lakhs*",
-    image: "/images/springhill-campus.jpeg",
-    alt: "Spring Hill Homes Luxury Ready to Live Campus Surat",
-  },
-  {
-    projectId: "raj-mahel",
-    projectName: "Raj Mahel",
-    tag: "RAJ MAHEL • 52 EXCLUSIVE FAMILIES",
-    headline: "The Real Mahel in Surat.",
-    subhead: "120ft & 60ft Corner Project • 100% East-West Vastu • Palatial Bungalows",
-    startingPrice: "From ₹72.80 Lakhs*",
-    image: "/images/rajmahel/entrance-gate.jpg",
-    alt: "Raj Mahel Luxury Bungalows Surat",
-  },
-  {
-    projectId: "applewood-homes",
-    projectName: "Applewood Homes",
-    tag: "APPLEWOOD HOMES • LIMITED 53 PLOTS",
-    headline: "Move In This Month.",
-    subhead: "20-Foot Wide Living Halls • Corner Road Touch • Immediate Possession",
-    startingPrice: "From ₹42.27 Lakhs*",
-    image: "/images/applewood/applewood-1.jpg",
-    alt: "Applewood Homes Ready Row Houses Surat",
-  },
-  {
-    projectId: "mahel-bungalows",
-    projectName: "Mahel",
-    tag: "MAHEL • 31 ELITE FAMILIES",
-    headline: "Royal 3-Side Open Enclave.",
-    subhead: "120ft Main Road Junction • Royal Theme Architecture • Prime TP Area",
-    startingPrice: "From ₹72.80 Lakhs*",
-    image: "/images/mahel/entrance-gate.jpg",
-    alt: "Mahel Exclusive Bungalow Plot Project Surat",
-  },
-]
-
 export function HeroSlider({ onOpenVisitModal }: HeroSliderProps) {
+  const { lang, t } = useLanguage()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isMounted, setIsMounted] = useState(false)
   const swiperRef = useRef<SwiperType | null>(null)
@@ -76,7 +37,7 @@ export function HeroSlider({ onOpenVisitModal }: HeroSliderProps) {
     setIsMounted(true)
   }, [])
 
-  // 1. Subtle Scroll Parallax (Architect moves slower than foreground)
+  // 1. Subtle Scroll Parallax (Architecture moves slower than foreground)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
@@ -91,11 +52,13 @@ export function HeroSlider({ onOpenVisitModal }: HeroSliderProps) {
   }
 
   const handleScrollDown = () => {
-    const elem = document.querySelector("#why-ready-to-live")
+    const elem = document.querySelector("#why-invest") || document.querySelector("#projects")
     if (elem) {
       elem.scrollIntoView({ behavior: "smooth" })
     }
   }
+
+  const currentSlide = HERO_SLIDES[activeIndex] || HERO_SLIDES[0]
 
   return (
     <section
@@ -119,45 +82,33 @@ export function HeroSlider({ onOpenVisitModal }: HeroSliderProps) {
               swiperRef.current = swiper
             }}
             onSlideChange={(swiper) => {
-              setActiveIndex(swiper.realIndex)
+              setActiveIndex(swiper.realIndex % HERO_SLIDES.length)
             }}
             className="w-full h-full"
           >
-            {SLIDES.map((slide, idx) => (
-              <SwiperSlide key={slide.projectId} className="relative w-full h-full overflow-hidden">
-                {/* Ken-Burns Continuous Cinema Zoom from 1.0 to 1.10 */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden">
-                  <motion.div
-                    key={`${slide.projectId}-${activeIndex === idx}`}
-                    initial={{ scale: 1.0 }}
-                    animate={{ scale: activeIndex === idx ? 1.1 : 1.0 }}
-                    transition={{
-                      duration: 7.0,
-                      ease: "linear",
-                    }}
-                    className="relative w-full h-full will-change-transform"
-                  >
-                    <Image
-                      src={slide.image}
-                      alt={slide.alt}
-                      fill
-                      priority={idx === 0}
-                      sizes="100vw"
-                      className="object-cover object-center"
-                    />
-                  </motion.div>
+            {HERO_SLIDES.map((slide, idx) => (
+              <SwiperSlide key={slide.id} className="relative w-full h-full overflow-hidden">
+                <div className="relative w-full h-full animate-kenburns">
+                  <Image
+                    src={slide.image}
+                    alt={slide.alt}
+                    fill
+                    priority={idx === 0}
+                    sizes="100vw"
+                    className="object-cover object-center"
+                  />
+                  {/* Cinematic Luxury Dark Vignette Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950/95 via-stone-950/45 to-stone-950/40" />
+                  <div className="absolute inset-0 bg-stone-950/20" />
                 </div>
-
-                {/* Shreepad Luxury Vignette Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/95 via-stone-950/45 to-stone-950/40" />
               </SwiperSlide>
             ))}
           </Swiper>
         ) : (
-          <div className="relative w-full h-full overflow-hidden">
+          <div className="relative w-full h-full">
             <Image
-              src={SLIDES[0].image}
-              alt={SLIDES[0].alt}
+              src={HERO_SLIDES[0].image}
+              alt={HERO_SLIDES[0].alt}
               fill
               priority
               sizes="100vw"
@@ -170,39 +121,70 @@ export function HeroSlider({ onOpenVisitModal }: HeroSliderProps) {
 
       {/* 2. MINIMALIST EDITORIAL SLIDE CONTENT WITH MASKED SPLIT-HEADING */}
       <div className="absolute inset-0 z-20 pointer-events-none flex flex-col justify-center">
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-20 pb-24 pointer-events-auto">
+        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-24 pb-28 pointer-events-auto">
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeIndex}
+              key={`${activeIndex}-${lang}`}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.7, ease: ARCHITECTURAL_EASE }}
-              className="max-w-3xl space-y-5"
+              className="max-w-3xl space-y-4"
             >
-              {/* Clean Minimal Eyebrow Tag */}
-              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold tracking-[0.2em] uppercase text-[#DFC8A7]">
-                <span>{SLIDES[activeIndex].tag}</span>
-                <span className="size-1 rounded-full bg-[#B4833E]" />
-                <span className="text-white font-semibold">{SLIDES[activeIndex].startingPrice}</span>
+              {/* Top Trust Pill (Max 4 words: RERA APPROVED • SMC & NEW TP AREA • LIVE & READY CAMPUSES) */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[11px] font-bold tracking-[0.16em] uppercase text-[#DFC8A7]">
+                <ShieldCheck className="size-3.5 text-emerald-400 shrink-0" />
+                <span>{lang === "GU" ? HERO_TRUST_PILL.gu : HERO_TRUST_PILL.en}</span>
               </div>
 
-              {/* Masked Editorial Headline */}
+              {/* Eyebrow Tag Pill: Max 4 words */}
+              <div className="flex items-center gap-2.5">
+                <span className="px-3 py-1 rounded-full bg-[#B4833E]/20 border border-[#DFC8A7]/40 text-xs font-bold tracking-[0.2em] uppercase text-[#DFC8A7]">
+                  {currentSlide.tag}
+                </span>
+                <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold text-white border border-white/20">
+                  {currentSlide.startingPrice}
+                </span>
+              </div>
+
+              {/* Masked Editorial Headline: Max 8 words */}
               <EditorialHeading
-                text={SLIDES[activeIndex].headline}
+                text={lang === "GU" ? currentSlide.headlineGu : currentSlide.headline}
                 tag="h1"
-                className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold text-white tracking-tight drop-shadow-xl"
+                className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-white tracking-tight drop-shadow-xl leading-[1.12]"
               />
 
-              {/* Single Crisp Subtitle Line */}
+              {/* Subhead: Max 15 words */}
               <motion.p
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.25, ease: ARCHITECTURAL_EASE }}
-                className="text-base sm:text-lg text-stone-200 font-medium max-w-xl leading-relaxed drop-shadow"
+                className="text-sm sm:text-base text-stone-200 font-medium max-w-xl leading-relaxed drop-shadow"
               >
-                {SLIDES[activeIndex].subhead}
+                {lang === "GU" ? currentSlide.subheadGu : currentSlide.subhead}
               </motion.p>
+
+              {/* Quick Specs Strip */}
+              {currentSlide.specsStrip && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.3, ease: ARCHITECTURAL_EASE }}
+                  className="flex flex-wrap items-center gap-2 pt-1"
+                >
+                  {(lang === "GU" ? currentSlide.specsStripGu : currentSlide.specsStrip).map(
+                    (spec, sIdx) => (
+                      <span
+                        key={sIdx}
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-black/40 backdrop-blur-md border border-white/15 text-xs text-stone-300 font-medium"
+                      >
+                        <span className="size-1 rounded-full bg-[#B4833E]" />
+                        <span>{spec}</span>
+                      </span>
+                    )
+                  )}
+                </motion.div>
+              )}
 
               {/* Action Buttons with Desktop Magnetic Effect */}
               <motion.div
@@ -216,18 +198,18 @@ export function HeroSlider({ onOpenVisitModal }: HeroSliderProps) {
                     onClick={handleScrollToProjects}
                     className="inline-flex items-center gap-2 bg-[#B4833E] hover:bg-[#8F642B] text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-full shadow-lg transition-transform active:scale-95 cursor-pointer group"
                   >
-                    <span>Explore Residences</span>
+                    <span>{t("Explore 4 Ready Projects", "4 રેડી પ્રોજેક્ટ્સ જુઓ")}</span>
                     <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                   </button>
                 </Magnet>
 
                 <Magnet padding={35} magnetStrength={0.2} disabled={false}>
                   <button
-                    onClick={() => onOpenVisitModal(SLIDES[activeIndex].projectName)}
+                    onClick={() => onOpenVisitModal(currentSlide.projectName)}
                     className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white backdrop-blur-md border border-white/25 font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-full transition-colors cursor-pointer"
                   >
                     <Calendar className="size-4 text-[#DFC8A7]" />
-                    <span>Schedule Site Visit</span>
+                    <span>{t("Schedule Site Visit", "સાઇટ વિઝિટ બુક કરો")}</span>
                   </button>
                 </Magnet>
               </motion.div>
@@ -247,7 +229,7 @@ export function HeroSlider({ onOpenVisitModal }: HeroSliderProps) {
             <span className="size-8 rounded-full border border-white/20 flex items-center justify-center group-hover:border-[#B4833E] transition-colors">
               <ArrowDown className="size-3.5 text-[#DFC8A7] animate-bounce" />
             </span>
-            <span>Scroll to Explore</span>
+            <span>{t("Scroll to Explore", "એક્સપ્લોર કરવા સ્ક્રોલ કરો")}</span>
           </button>
 
           {/* Right: Slide Counter, Animated Progress Bar & Chevrons */}
@@ -256,46 +238,37 @@ export function HeroSlider({ onOpenVisitModal }: HeroSliderProps) {
             <div className="flex items-center gap-1.5 font-mono text-xs font-bold">
               <span className="text-[#DFC8A7] text-sm">0{activeIndex + 1}</span>
               <span className="text-stone-500">/</span>
-              <span className="text-stone-400">0{SLIDES.length}</span>
+              <span className="text-stone-400">0{HERO_SLIDES.length}</span>
             </div>
 
-            {/* Timed Progress Bar (Fills 0% to 100% over 6.5s) */}
-            <div className="w-16 h-1 bg-white/20 rounded-full overflow-hidden hidden sm:block">
+            {/* Timed Champagne Bronze Slide Progress Bar */}
+            <div className="w-16 sm:w-24 h-1 bg-white/20 rounded-full overflow-hidden relative">
               <motion.div
-                key={`progress-${activeIndex}`}
+                key={activeIndex}
                 initial={{ width: "0%" }}
                 animate={{ width: "100%" }}
                 transition={{ duration: 6.5, ease: "linear" }}
-                className="h-full bg-[#B4833E] rounded-full will-change-transform"
+                className="absolute top-0 bottom-0 left-0 bg-[#B4833E] rounded-full"
               />
             </div>
 
-            <div className="h-3.5 w-px bg-white/20" />
-
-            {/* Active Project Title */}
-            <span className="text-xs font-serif font-bold text-stone-200 hidden md:inline-block max-w-[120px] truncate">
-              {SLIDES[activeIndex].projectName}
-            </span>
-
-            <div className="h-3.5 w-px bg-white/20 hidden md:block" />
-
-            {/* Chevrons */}
+            {/* Navigation Chevrons */}
             <div className="flex items-center gap-1">
               <button
                 type="button"
-                aria-label="Previous Slide"
                 onClick={() => swiperRef.current?.slidePrev()}
-                className="p-1.5 rounded-full bg-white/10 hover:bg-white/25 text-white transition-colors cursor-pointer"
+                className="size-7 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Previous Slide"
               >
-                <ChevronLeft className="size-4" />
+                <ChevronLeft className="size-3.5" />
               </button>
               <button
                 type="button"
-                aria-label="Next Slide"
                 onClick={() => swiperRef.current?.slideNext()}
-                className="p-1.5 rounded-full bg-white/10 hover:bg-white/25 text-white transition-colors cursor-pointer"
+                className="size-7 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Next Slide"
               >
-                <ChevronRight className="size-4" />
+                <ChevronRight className="size-3.5" />
               </button>
             </div>
           </div>

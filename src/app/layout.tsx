@@ -6,6 +6,7 @@ import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { LenisProvider } from "@/components/providers/lenis-provider";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -60,9 +61,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${jakarta.variable} ${cormorant.variable} scroll-smooth`}>
       <body className="font-sans bg-[#FAF8F5] text-[#18181B] antialiased selection:bg-[#B4833E]/20 selection:text-[#B4833E] overflow-x-hidden min-h-screen">
-        <LenisProvider>
-          {children}
-        </LenisProvider>
+        <LanguageProvider>
+          <LenisProvider>
+            {children}
+          </LenisProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

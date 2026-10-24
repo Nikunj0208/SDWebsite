@@ -1,14 +1,19 @@
 import { chromium } from 'playwright';
-import fs from 'fs';
-import path from 'path';
 
 async function runAudit() {
-  console.log('🚀 Starting Silverstone Developers Motion & QA Audit...\n');
+  console.log('🚀 Starting Silverstone Developers Verified Copy & Motion QA Audit...\n');
 
   const browser = await chromium.launch({ headless: true });
   const report = {
-    desktop: { errors: [], warnings: [], stuckHeadings: [], counters: [], passed: true },
-    mobile: { errors: [], warnings: [], stickyBarVisible: false, passed: true },
+    desktop: { errors: [], warnings: [], stuckHeadings: [], passed: true },
+    features: {
+      bilingualToggle: false,
+      plotModalOpened: false,
+      trustBarRendered: false,
+      all4ProjectsRendered: false,
+      comparisonTableRendered: false,
+    },
+    mobile: { errors: [], stickyBarVisible: false, passed: true },
   };
 
   // ------------------------------------------------------------------------
@@ -24,8 +29,6 @@ async function runAudit() {
     if (msg.type() === 'error') {
       report.desktop.errors.push(msg.text());
       console.error('❌ Console Error:', msg.text());
-    } else if (msg.type() === 'warning') {
-      report.desktop.warnings.push(msg.text());
     }
   });
 
@@ -35,16 +38,95 @@ async function runAudit() {
   });
 
   await desktopPage.goto('http://localhost:3000', { waitUntil: 'networkidle' });
+  await desktopPage.waitForTimeout(500);
 
-  // Kinematic Scroll Down with Lenis
-  const scrollHeight = await desktopPage.evaluate(() => document.body.scrollHeight);
-  console.log(`  Page Total Height: ${scrollHeight}px`);
-
-  for (let y = 0; y <= scrollHeight; y += 450) {
-    await desktopPage.evaluate((scrollY) => window.scrollTo(0, scrollY), y);
-    await desktopPage.waitForTimeout(100);
+  // 1A. Check 6-Metric Trust Bar
+  const trustBarText = await desktopPage.evaluate(() => {
+    const el = document.querySelector('.lg\\:grid-cols-6');
+    return el ? el.textContent : '';
+  });
+  if (trustBarText.includes('42.27') && trustBarText.includes('300m') && trustBarText.includes('1 KM')) {
+    report.features.trustBarRendered = true;
+    console.log('✅ 6-Metric Trust & Infrastructure Bar verified with numbers-first values');
+  } else {
+    console.error('❌ Trust Bar failed content verification:', trustBarText);
   }
-  await desktopPage.waitForTimeout(800);
+
+  // 1B. Check The 4 Flagship Projects
+  const pageContent = await desktopPage.content();
+  const hasApplewood = pageContent.includes('Applewood') && pageContent.includes('42.27');
+  const hasSpringhill = pageContent.includes('Springhill Homes') && pageContent.includes('47.00');
+  const hasRajmahel = pageContent.includes('Rajmahel') && pageContent.includes('72.80');
+  const hasMahel = pageContent.includes('Mahel') && pageContent.includes('The Real Mahel');
+
+  if (hasApplewood && hasSpringhill && hasRajmahel && hasMahel) {
+    report.features.all4ProjectsRendered = true;
+    console.log('✅ All 4 Flagship Projects rendered with verified brochure pricing & dimensions');
+  } else {
+    console.error('❌ Flagship projects missing from page:', { hasApplewood, hasSpringhill, hasRajmahel, hasMahel });
+  }
+
+  // 1C. Check "Why Invest Here?" & Comparison Table
+  if (pageContent.includes('Find Your Ideal Plot in 10 Seconds') || pageContent.includes('Decision Tool') || pageContent.includes('Front Opening')) {
+    report.features.comparisonTableRendered = true;
+    console.log('✅ Side-by-side Project Selector Table verified');
+  }
+
+  // 1D. Test Bilingual Language Toggle (Desktop Header)
+  console.log('🌐 Testing Language Toggle (EN -> GU -> EN)...');
+  const guButton = await desktopPage.locator('button:has-text("ગુજરાતી")').first();
+  if (await guButton.isVisible()) {
+    await guButton.click();
+    await desktopPage.waitForTimeout(400);
+
+    const guPageText = await desktopPage.content();
+    if (guPageText.includes('સુરતનું') || guPageText.includes('ગુજરાતી') || guPageText.includes('આગામી')) {
+      report.features.bilingualToggle = true;
+      console.log('✅ Bilingual Language Switcher works: Gujarati text active');
+    }
+
+    // Switch back to EN (exact match so 'Menu' is not matched)
+    const enButton = await desktopPage.getByRole('button', { name: /^EN$/ }).first();
+    if (await enButton.isVisible()) {
+      await enButton.click();
+      await desktopPage.waitForTimeout(300);
+    }
+  }
+
+  // 1E. Test "View Plot Layout & Dimensions" Modal
+  console.log('📐 Testing Plot Layout Modal...');
+  const plotButton = await desktopPage.locator('button:has-text("View Plot Layout & Dimensions"), button:has-text("પ્લોટ લેઆઉટ")').first();
+  const isPlotBtnVisible = await plotButton.isVisible();
+  console.log(`  Plot button found: ${isPlotBtnVisible}`);
+  if (isPlotBtnVisible) {
+    await plotButton.click();
+    await desktopPage.waitForTimeout(500);
+
+    const modalTitle = await desktopPage.getByText(/Official Plot Layouts|અધિકૃત પ્લોટ લેઆઉટ/i).first().isVisible();
+    const hasDimensions = await desktopPage.getByText(/KEY DIMENSIONS|મુખ્ય માપ/i).first().isVisible();
+    const hasWhatsAppCta = await desktopPage.getByText(/Get Exact Plot Availability|WhatsApp પર ઉપલબ્ધ/i).first().isVisible();
+
+    if (modalTitle && hasDimensions && hasWhatsAppCta) {
+      report.features.plotModalOpened = true;
+      console.log('✅ Plot Layout & Dimensions Modal opens with verified specs & WhatsApp action');
+    } else {
+      console.error('❌ Plot Modal opened but missing required specs:', { modalTitle, hasDimensions, hasWhatsAppCta });
+    }
+
+    // Close modal
+    await desktopPage.keyboard.press('Escape');
+    await desktopPage.waitForTimeout(300);
+  } else {
+    console.error('❌ Could not locate Plot Layout button');
+  }
+
+  // 1F. Kinematic Smooth Scroll Down
+  const scrollHeight = await desktopPage.evaluate(() => document.body.scrollHeight);
+  for (let y = 0; y <= scrollHeight; y += 500) {
+    await desktopPage.evaluate((scrollY) => window.scrollTo(0, scrollY), y);
+    await desktopPage.waitForTimeout(60);
+  }
+  await desktopPage.waitForTimeout(500);
 
   // Check Headings for Stuck Opacity
   const stuckHeadings = await desktopPage.evaluate(() => {
@@ -58,43 +140,23 @@ async function runAudit() {
   });
 
   report.desktop.stuckHeadings = stuckHeadings;
-  if (stuckHeadings.length > 0) {
-    console.error('❌ Found Stuck Headings at opacity 0:', stuckHeadings);
-    report.desktop.passed = false;
-  } else {
+  if (stuckHeadings.length === 0) {
     console.log('✅ All Headings Revealed & Visible (Zero stuck opacities)');
+  } else {
+    console.error('❌ Found Stuck Headings:', stuckHeadings);
+    report.desktop.passed = false;
   }
 
-  // Check Counter Values
-  const counters = await desktopPage.evaluate(() => {
-    const counterSec = document.querySelector('#counter');
-    if (!counterSec) return [];
-    const text = counterSec.textContent || '';
-    return {
-      has100: text.includes('100'),
-      has500: text.includes('500'),
-      has0Days: text.includes('0') && text.includes('Days'),
-      has15Years: text.includes('15') && text.includes('Years'),
-      raw: text.slice(0, 300),
-    };
-  });
-  console.log('✅ Odometer Counters Audit:', counters);
-
-  // Take Desktop Screenshot
-  const desktopScreenshotPath = 'public/audit_desktop_1440x900.png';
-  await desktopPage.screenshot({ path: desktopScreenshotPath, fullPage: false });
-  console.log(`✅ Desktop Screenshot saved to ${desktopScreenshotPath}`);
-
+  // Desktop Screenshot
+  await desktopPage.screenshot({ path: 'public/audit_desktop_verified.png', fullPage: false });
   await desktopContext.close();
 
   // ------------------------------------------------------------------------
-  // 2. MOBILE AUDIT (390x844 iPhone 14 / WhatsApp Browser Mode)
+  // 2. MOBILE AUDIT (390x844 iPhone 14)
   // ------------------------------------------------------------------------
   console.log('\n📱 Auditing Mobile Viewport (390x844)...');
   const mobileContext = await browser.newContext({
     viewport: { width: 390, height: 844 },
-    userAgent:
-      'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 WhatsApp/2.23.20.78',
     isMobile: true,
     hasTouch: true,
   });
@@ -108,19 +170,13 @@ async function runAudit() {
   });
 
   await mobilePage.goto('http://localhost:3000', { waitUntil: 'networkidle' });
-
-  // Initially at top (y = 0), check sticky bar
-  let isBarAtTop = await mobilePage.evaluate(() => {
-    const bar = document.querySelector('.fixed.bottom-0');
-    return bar !== null;
-  });
-  console.log(`  Sticky Bar at top (y=0): ${isBarAtTop ? 'Visible (should be hidden)' : 'Cleanly Hidden'}`);
+  await mobilePage.waitForTimeout(300);
 
   // Scroll past 250px
   await mobilePage.evaluate(() => window.scrollTo(0, 350));
-  await mobilePage.waitForTimeout(500);
+  await mobilePage.waitForTimeout(400);
 
-  // Check sticky bar after 200px scroll
+  // Check sticky bar after scroll
   const isBarAfterScroll = await mobilePage.evaluate(() => {
     const bar = document.querySelector('.fixed.bottom-0');
     if (!bar) return false;
@@ -129,13 +185,9 @@ async function runAudit() {
   });
 
   report.mobile.stickyBarVisible = isBarAfterScroll;
-  console.log(`✅ Mobile Sticky Conversion Bar after scroll: ${isBarAfterScroll ? 'Visible & Slid In' : 'Failed'}`);
+  console.log(`✅ Mobile Sticky Conversion Bar after scroll: ${isBarAfterScroll ? 'Visible & Active' : 'Failed'}`);
 
-  // Mobile Screenshot
-  const mobileScreenshotPath = 'public/audit_mobile_390x844.png';
-  await mobilePage.screenshot({ path: mobileScreenshotPath, fullPage: false });
-  console.log(`✅ Mobile Screenshot saved to ${mobileScreenshotPath}`);
-
+  await mobilePage.screenshot({ path: 'public/audit_mobile_verified.png', fullPage: false });
   await mobileContext.close();
   await browser.close();
 
@@ -143,22 +195,35 @@ async function runAudit() {
   // SUMMARY
   // ------------------------------------------------------------------------
   console.log('\n=============================================');
-  console.log('🎯 MOTION & QUALITY AUDIT SUMMARY');
+  console.log('🎯 VERIFIED BROCHURE & MOTION AUDIT SUMMARY');
   console.log('=============================================');
   console.log(`Desktop Errors: ${report.desktop.errors.length}`);
-  console.log(`Desktop Stuck Headings: ${report.desktop.stuckHeadings.length}`);
-  console.log(`Mobile Errors: ${report.mobile.errors.length}`);
+  console.log(`Stuck Headings: ${report.desktop.stuckHeadings.length}`);
+  console.log(`Trust Bar: ${report.features.trustBarRendered ? 'PASS' : 'FAIL'}`);
+  console.log(`All 4 Flagship Projects: ${report.features.all4ProjectsRendered ? 'PASS' : 'FAIL'}`);
+  console.log(`Comparison Table: ${report.features.comparisonTableRendered ? 'PASS' : 'FAIL'}`);
+  console.log(`Bilingual Toggle (EN/GU): ${report.features.bilingualToggle ? 'PASS' : 'FAIL'}`);
+  console.log(`Plot Layout Modal: ${report.features.plotModalOpened ? 'PASS' : 'FAIL'}`);
   console.log(`Mobile Sticky Bar: ${report.mobile.stickyBarVisible ? 'PASS' : 'FAIL'}`);
   console.log('=============================================\n');
 
-  if (report.desktop.errors.length > 0 || report.desktop.stuckHeadings.length > 0 || !report.mobile.stickyBarVisible) {
+  const allPassed =
+    report.desktop.errors.length === 0 &&
+    report.desktop.stuckHeadings.length === 0 &&
+    report.features.trustBarRendered &&
+    report.features.all4ProjectsRendered &&
+    report.features.bilingualToggle &&
+    report.features.plotModalOpened &&
+    report.mobile.stickyBarVisible;
+
+  if (!allPassed) {
     process.exit(1);
   } else {
-    console.log('🏆 ALL 7 MOTION ANIMATION SPECIFICATIONS PASSED AUDIT WITH 100% SUCCESS!');
+    console.log('🏆 100% AUDIT PASS: All Verified Brochure Data, Copywriting Rules, and Motion Verified!');
   }
 }
 
 runAudit().catch((err) => {
-  console.error('Audit crashed:', err);
+  console.error('Audit failed:', err);
   process.exit(1);
 });

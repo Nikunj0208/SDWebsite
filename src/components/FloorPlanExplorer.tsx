@@ -234,7 +234,7 @@ interface FloorPlanExplorerProps {
 }
 
 export function FloorPlanExplorer({ onOpenPriceSheetModal }: FloorPlanExplorerProps) {
-  const [selectedProject, setSelectedProject] = useState<"spring-hill" | "raj-mahel" | "applewood-homes">("spring-hill")
+  const [selectedProject, setSelectedProject] = useState<"spring-hill" | "raj-mahel" | "applewood-homes">("applewood-homes")
   const [selectedUnitType, setSelectedUnitType] = useState<"3 BHK Royal" | "4 BHK Grand" | "Master Layout">("3 BHK Royal")
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
 
@@ -245,9 +245,9 @@ export function FloorPlanExplorer({ onOpenPriceSheetModal }: FloorPlanExplorerPr
     ) || EXPLORER_PLANS[0]
 
   const PROJECT_TABS = [
-    { key: "spring-hill", label: "Spring Hill", badge: "From ₹47 L" },
-    { key: "raj-mahel", label: "Raj Mahel", badge: "From ₹72.8 L" },
-    { key: "applewood-homes", label: "Applewood Homes", badge: "From ₹42.27 L" },
+    { key: "applewood-homes", label: "Applewood", badge: "From ₹42.27 L*" },
+    { key: "spring-hill", label: "Springhill Homes", badge: "From ₹47.00 L*" },
+    { key: "raj-mahel", label: "Rajmahel", badge: "From ₹72.80 L*" },
   ] as const
 
   const UNIT_TABS = ["3 BHK Royal", "4 BHK Grand", "Master Layout"] as const

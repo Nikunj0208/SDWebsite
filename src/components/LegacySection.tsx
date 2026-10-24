@@ -6,6 +6,7 @@ import { ArchitecturalReveal, ARCHITECTURAL_EASE } from "@/components/ui/archite
 import { EditorialHeading } from "@/components/ui/editorial-heading"
 import { ArchitecturalImage } from "@/components/ui/architectural-image"
 import Magnet from "@/components/Magnet"
+import { useLanguage } from "@/context/LanguageContext"
 import {
   ShieldCheck,
   Calendar,
@@ -21,6 +22,7 @@ interface LegacySectionProps {
 }
 
 export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
+  const { lang, t } = useLanguage()
   const handleScheduleVisit = () => {
     if (onOpenVisitModal) {
       onOpenVisitModal("Silverstone Ready Projects")
@@ -110,47 +112,56 @@ export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
           <div className="lg:col-span-6 space-y-6">
             <ArchitecturalReveal direction="left" duration={0.6}>
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF4EA] border border-[#DFC8A7] text-[11px] font-bold tracking-[0.2em] uppercase text-[#B4833E]">
-                <span>THE SILVERSTONE STANDARD</span>
+                <span>{t("THE SILVERSTONE STANDARD", "સિલ્વરસ્ટોન સ્ટાન્ડર્ડ")}</span>
               </div>
             </ArchitecturalReveal>
 
-            {/* Masked Editorial Heading */}
+            {/* Masked Editorial Headline: Max 8 words */}
             <EditorialHeading
-              text="Why Wait 4 Years for a Render When Your Home is Ready to Live Today?"
+              text={
+                lang === "GU"
+                  ? "રેન્ડર માટે 4 વર્ષ રાહ કેમ જોવી?"
+                  : "Why Wait 4 Years For A Render?"
+              }
               tag="h2"
               className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#18181B] tracking-tight leading-[1.14]"
-              highlightWords={["Ready", "Today"]}
+              highlightWords={["Render", "Wait", "રાહ"]}
             />
 
+            {/* Subhead: Max 15 words */}
             <ArchitecturalReveal direction="left" delay={0.15} duration={0.8}>
-              <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
-                For over a decade, Silverstone Developers has stood apart in Surat by delivering certainty instead of promises. While conventional builders sell 3D renders with years of construction delay, <strong className="text-stone-900 font-semibold">every Silverstone residence is already completed, BU-certified, and ready for immediate key handover</strong>.
+              <p className="text-sm sm:text-base text-stone-600 leading-relaxed max-w-xl">
+                {t(
+                  "BU/OC certified ready inventory eliminating possession delays, GST burdens, and construction speculations completely.",
+                  "100% BU/OC મંજૂર તૈયાર ઘરો; બાંધકામમાં વિલંબ, GST બોજ અને અનિશ્ચિતતામાંથી સંપૂર્ણ મુક્તિ."
+                )}
               </p>
             </ArchitecturalReveal>
 
+            {/* Numbers-First Data Badges */}
             <ArchitecturalReveal direction="left" delay={0.25} duration={0.8}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 text-xs text-stone-800">
                 <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-all hover:shadow-md">
                   <Percent className="size-4 text-[#15803D] shrink-0 mt-0.5" />
                   <div>
                     <strong className="block text-stone-900 font-bold">0% GST Surcharge</strong>
-                    <span className="text-stone-500">Save 5% tax on ready BU inventory</span>
+                    <span className="text-stone-500">{t("Save ₹3L–₹10L on ready BU", "તૈયાર BU પર 5% GST ની બચત")}</span>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-all hover:shadow-md">
                   <KeyRound className="size-4 text-[#15803D] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-stone-900 font-bold">Zero Rent & EMI Drain</strong>
-                    <span className="text-stone-500">Immediate move-in, stop paying rent</span>
+                    <strong className="block text-stone-900 font-bold">0 Days Possession Wait</strong>
+                    <span className="text-stone-500">{t("Move in on day one", "પ્રથમ દિવસથી સીધો કબજો")}</span>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-all hover:shadow-md">
                   <FileCheck className="size-4 text-[#15803D] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-stone-900 font-bold">Verified Space & Sunlight</strong>
-                    <span className="text-stone-500">Inspect real room sizes & cross-ventilation</span>
+                    <strong className="block text-stone-900 font-bold">100% Verified Sunlight</strong>
+                    <span className="text-stone-500">{t("Test actual breeze & acoustics", "વાસ્તવિક ઓરડા અને સૂર્યપ્રકાશ જુઓ")}</span>
                   </div>
                 </div>
 
@@ -158,7 +169,7 @@ export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
                   <Landmark className="size-4 text-[#15803D] shrink-0 mt-0.5" />
                   <div>
                     <strong className="block text-stone-900 font-bold">Pre-Approved Bank Loans</strong>
-                    <span className="text-stone-500">Fast sanction from SBI, HDFC & ICICI</span>
+                    <span className="text-stone-500">{t("SBI, HDFC & ICICI instant sanction", "SBI, HDFC અને ICICI માંથી ત્વરિત લોન")}</span>
                   </div>
                 </div>
               </div>
@@ -172,7 +183,7 @@ export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
                     className="inline-flex items-center gap-2 bg-[#B4833E] hover:bg-[#8F642B] text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-full shadow-md transition-transform active:scale-95 cursor-pointer group"
                   >
                     <Calendar className="size-4" />
-                    <span>Schedule Site Inspection</span>
+                    <span>{t("Schedule Site Inspection", "રૂબરૂ સાઇટ વિઝિટ બુક કરો")}</span>
                     <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                   </button>
                 </Magnet>
@@ -181,7 +192,7 @@ export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
                   href="#projects"
                   className="inline-flex items-center gap-1.5 px-5 py-3.5 rounded-full border border-stone-800 bg-white text-stone-900 hover:bg-stone-900 hover:text-white text-xs font-bold uppercase tracking-wider transition-colors"
                 >
-                  <span>Explore 4 Campuses →</span>
+                  <span>{t("Explore 4 Campuses →", "4 પ્રોજેક્ટ્સ જુઓ →")}</span>
                 </a>
               </div>
             </ArchitecturalReveal>

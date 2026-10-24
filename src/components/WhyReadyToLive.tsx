@@ -25,6 +25,7 @@ import { Marquee } from "@/components/magicui/marquee"
 import { EditorialHeading } from "@/components/ui/editorial-heading"
 import { ArchitecturalReveal } from "@/components/ui/architectural-reveal"
 import Magnet from "@/components/Magnet"
+import { useLanguage } from "@/context/LanguageContext"
 
 interface WhyReadyToLiveProps {
   onOpenVisitModal?: (project?: string) => void
@@ -40,31 +41,38 @@ const APPROVED_BANKS = [
 ]
 
 export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
+  const { lang, t } = useLanguage()
   // Shreepad-Style Value Proposition Cards with Giant Watermark Numbers (01, 02, 03)
   const VALUE_PILLARS = [
     {
       num: "01",
-      title: "Zero Construction Risk",
-      description:
-        "Every Silverstone residence is 100% complete with ready BU Permission and Occupancy Certificate. Zero project delays, zero contractor speculation, and zero layout surprises.",
+      title: t("Zero Construction Risk", "ઝીરો બાંધકામ જોખમ"),
+      description: t(
+        "100% complete with ready BU & OC. Zero project delays or layout surprises.",
+        "100% પૂર્ણ BU અને OC મંજૂર ઘરો. વિલંબ કે લેઆઉટમાં ફેરફારનું કોઈ જોખમ નહીં."
+      ),
       icon: ShieldCheck,
-      badge: "BU & OC Certified",
+      badge: "100% BU & OC Certified",
     },
     {
       num: "02",
-      title: "Zero Rent & EMI Overlap",
-      description:
-        "Eliminate the painful financial double-drain of paying heavy monthly house rent and home loan interest simultaneously. Move in immediately on day one.",
+      title: t("Zero Rent & EMI Overlap", "ભાડું અને EMI માંથી મુક્તિ"),
+      description: t(
+        "Move in immediately. Stop wasting money on double rent and construction loan interest.",
+        "પ્રથમ દિવસથી સીધો કબજો મેળવો. ડબલ ભાડું અને વ્યાજના આર્થિક બોજમાંથી મુક્તિ."
+      ),
       icon: BadgePercent,
       badge: "0% GST on Ready BU",
     },
     {
       num: "03",
-      title: "Physical Reality Verification",
-      description:
-        "Step inside your actual home. Touch the imported tiles, verify verified carpet dimensions, test cross-breeze, and inspect East-West Vastu alignment with your consultant.",
+      title: t("Physical Reality Verification", "પ્રત્યક્ષ સ્થળ ચકાસણી"),
+      description: t(
+        "Walk inside your actual home. Touch verified finishes and test East-West Vastu alignment.",
+        "તમારા તૈયાર મકાનમાં પ્રત્યક્ષ ચાલો. ફિનિશિંગ તપાસો અને વાસ્તુ સુસંગતતા ચકાસો."
+      ),
       icon: Sparkles,
-      badge: "100% Vastu Compliant",
+      badge: "100% East-West Vastu",
     },
   ]
 
@@ -199,6 +207,13 @@ export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
               className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#18181B] tracking-tight"
               highlightWords={["Proven", "Advantage"]}
             />
+
+            <p className="text-sm sm:text-base text-stone-600 max-w-xl mx-auto pt-1">
+              {t(
+                "BU-approved ready possession eliminating possession delays, GST burdens, and construction speculations completely.",
+                "100% BU/OC મંજૂર તૈયાર ઘરો; બાંધકામમાં વિલંબ અને GST બોજમાંથી સંપૂર્ણ મુક્તિ."
+              )}
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -255,6 +270,13 @@ export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
               className="text-3xl sm:text-4xl font-serif font-bold text-[#18181B] tracking-tight"
               highlightWords={["Ready"]}
             />
+
+            <p className="text-xs sm:text-sm text-stone-600">
+              {t(
+                "Compare physical certainty against speculative 4-year project construction waiting periods.",
+                "4 વર્ષના અચોક્કસ બાંધકામ વિલંબ સામે તૈયાર મકાનની વાસ્તવિકતા સરખાવો."
+              )}
+            </p>
           </div>
 
           <div className="rounded-3xl bg-white border border-[#E6E0D6] shadow-md overflow-hidden">
@@ -388,7 +410,10 @@ export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
             />
 
             <p className="text-sm text-stone-600">
-              Lush senior decks, vehicle-free play podiums, and grand temple complexes already in active use by 500+ settled families.
+              {t(
+                "Lush senior decks, play podiums, and temple complexes active for 500+ settled families.",
+                "બગીચા, ચિલ્ડ્રન પ્લે એરિયા અને મંદિર પરિસર 500+ પરિવારો માટે સંપૂર્ણ કાર્યરત."
+              )}
             </p>
           </div>
 

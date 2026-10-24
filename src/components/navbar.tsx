@@ -20,46 +20,50 @@ import {
   MessageSquare,
 } from "lucide-react"
 
+import { useLanguage } from "@/context/LanguageContext"
+import { FLAGSHIP_PROJECTS } from "@/constants/silverstoneData"
+
 interface NavbarProps {
   onOpenVisitModal?: (project?: string) => void
 }
 
 const RUNNING_PROJECTS = [
   {
-    name: "Spring Hill",
-    type: "3 & 4 BHK Luxury Row Houses & Plots",
-    price: "From ₹47 Lakhs*",
-    location: "120ft & 60ft Road Junction, Surat",
-    status: "Ready Possession",
-    href: "#projects",
-  },
-  {
-    name: "Raj Mahel",
-    type: "All Mahel Type Palatial Bungalows",
-    price: "From ₹72.80 Lakhs*",
-    location: "Exclusive 52 Families • East-West Vastu",
-    status: "Ready Possession",
-    href: "#projects",
-  },
-  {
-    name: "Applewood Homes",
-    type: "20ft Wide Living Halls • Gated Campus",
-    price: "From ₹42.27 Lakhs*",
+    name: "Applewood",
+    type: "Premium Row House Plot Project",
+    price: "From ₹42.27 Lakh*",
     location: "89 & 137 Sq.Yd • Corner Road Touch",
-    status: "Ready Possession",
+    status: "Ready & Live Campus",
+    href: "#projects",
+  },
+  {
+    name: "Springhill Homes",
+    type: "3 / 4 / 5 BHK Row Houses & Plots",
+    price: "From ₹47.00 Lakh*",
+    location: "120ft & 60ft 4-Road Junction, Surat",
+    status: "Ready & Live Resort Campus",
+    href: "#projects",
+  },
+  {
+    name: "Rajmahel",
+    type: "All Mahel-Type Luxury Bungalows",
+    price: "From ₹72.80 Lakh*",
+    location: "Only 52 Families • East-West Vastu",
+    status: "Ready & Live Campus",
     href: "#projects",
   },
   {
     name: "Mahel",
-    type: "Royal 3-Side Open Bungalow Enclave",
-    price: "From ₹72.80 Lakhs*",
-    location: "31 Families • Landmark 4-Road Junction",
-    status: "Ready Possession",
+    type: "Exclusive Bungalow Plot Project",
+    price: "From ₹72.80 Lakh*",
+    location: "Only 31 Families • Landmark 4-Road Junction",
+    status: "Ultra-Private Community",
     href: "#projects",
   },
 ]
 
 export function Navbar({ onOpenVisitModal }: NavbarProps) {
+  const { lang, setLang, t } = useLanguage()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [isProjectsDropdownOpen, setIsProjectsDropdownOpen] = useState(false)
@@ -371,8 +375,44 @@ export function Navbar({ onOpenVisitModal }: NavbarProps) {
               </button>
             </nav>
 
-            {/* Right: Phone Hotline + Status + Single-Line Shreepad CTA Button */}
-            <div className="flex items-center gap-3">
+            {/* Right: Language Toggle + Phone Hotline + Status + Single-Line Shreepad CTA Button */}
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              {/* Language Switcher Toggle (EN | ગુજરાતી) */}
+              <div
+                className={`inline-flex items-center p-0.5 rounded-full border transition-all ${
+                  isScrolled
+                    ? "bg-[#FAF8F5] border-[#DFC8A7] shadow-xs"
+                    : "bg-white/10 border-white/25 backdrop-blur-md"
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() => setLang("EN")}
+                  className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
+                    lang === "EN"
+                      ? "bg-[#B4833E] text-white shadow-xs"
+                      : isScrolled
+                      ? "text-stone-600 hover:text-stone-900"
+                      : "text-stone-300 hover:text-white"
+                  }`}
+                >
+                  EN
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLang("GU")}
+                  className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
+                    lang === "GU"
+                      ? "bg-[#B4833E] text-white shadow-xs"
+                      : isScrolled
+                      ? "text-stone-600 hover:text-stone-900"
+                      : "text-stone-300 hover:text-white"
+                  }`}
+                >
+                  ગુજરાતી
+                </button>
+              </div>
+
               {/* Phone quick call (Desktop) */}
               <a
                 href="tel:+919904222000"
@@ -398,7 +438,7 @@ export function Navbar({ onOpenVisitModal }: NavbarProps) {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </span>
-                <span>Ready to Live</span>
+                <span>{t("Ready to Live", "તૈયાર કબજો")}</span>
               </div>
 
               {/* Shreepad-Style Crisp Single-Line CTA Button */}
@@ -407,7 +447,7 @@ export function Navbar({ onOpenVisitModal }: NavbarProps) {
                 className="bg-[#B4833E] hover:bg-[#8F642B] text-white font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded-full shadow-md transition-all active:scale-95 cursor-pointer flex items-center gap-2 whitespace-nowrap"
               >
                 <Calendar className="size-3.5 shrink-0" />
-                <span>Book Site Visit</span>
+                <span>{t("Book Site Visit", "વિઝિટ બુક કરો")}</span>
                 <ArrowRight className="size-3.5 shrink-0" />
               </button>
             </div>
@@ -441,14 +481,38 @@ export function Navbar({ onOpenVisitModal }: NavbarProps) {
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setIsMobileOpen(false)}
-                className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
-                aria-label="Close Navigation Menu"
-              >
-                <X className="size-5" />
-              </button>
+              <div className="flex items-center gap-2.5">
+                {/* Mobile Language Switcher */}
+                <div className="inline-flex items-center p-0.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md">
+                  <button
+                    type="button"
+                    onClick={() => setLang("EN")}
+                    className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
+                      lang === "EN" ? "bg-[#B4833E] text-white shadow-xs" : "text-stone-300"
+                    }`}
+                  >
+                    EN
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLang("GU")}
+                    className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
+                      lang === "GU" ? "bg-[#B4833E] text-white shadow-xs" : "text-stone-300"
+                    }`}
+                  >
+                    ગુજરાતી
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setIsMobileOpen(false)}
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                  aria-label="Close Navigation Menu"
+                >
+                  <X className="size-5" />
+                </button>
+              </div>
             </div>
 
             {/* Drawer Body: Navigation & Running Projects */}
