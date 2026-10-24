@@ -1,22 +1,19 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
-import { FadeIn, StaggerContainer } from "@/components/ui/motion"
 import {
   MapPin,
-  Maximize2,
   Calendar,
   MessageSquare,
-  ShieldCheck,
-  CheckCircle2,
-  ArrowRight,
   Sparkles,
-  Phone,
-  Layers,
-  Building,
+  ArrowRight,
+  CheckCircle2,
 } from "lucide-react"
+import { ARCHITECTURAL_EASE, ArchitecturalReveal } from "@/components/ui/architectural-reveal"
+import { EditorialHeading } from "@/components/ui/editorial-heading"
+import { ArchitecturalImage } from "@/components/ui/architectural-image"
+import Magnet from "@/components/Magnet"
 
 export interface ShowcaseProject {
   id: string
@@ -153,36 +150,44 @@ export function ProjectShowcase({
   return (
     <section id="projects" className="py-20 lg:py-28 bg-[#FAF8F5] relative border-b border-[#E6E0D6]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        {/* Header (Shreepad Style with Subtitle + Gilroy/Cormorant Heading + All Properties Pill) */}
+        {/* Header with Masked Editorial Heading */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <FadeIn direction="up">
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF4EA] border border-[#DFC8A7] text-[11px] font-bold tracking-[0.2em] uppercase text-[#B4833E]">
+          <div className="space-y-3">
+            <ArchitecturalReveal direction="up" duration={0.6}>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF4EA] border border-[#DFC8A7] text-[11px] font-bold tracking-[0.2em] uppercase text-[#B4833E]">
                 <span>FLAGSHIP READY DEVELOPMENTS</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#18181B] tracking-tight leading-[1.14]">
-                Completed Communities in Surat
-              </h2>
-              <p className="text-sm sm:text-base text-stone-600 max-w-xl">
-                100% completed, BU-approved row houses, bungalows, and plots with operational clubhouses in the Pal Gauravpath & 2nd Ring Road corridor.
-              </p>
-            </div>
-          </FadeIn>
+            </ArchitecturalReveal>
+
+            {/* Masked Editorial Heading required by Prompt */}
+            <EditorialHeading
+              text="Completed Landmark Residences Across Surat"
+              tag="h2"
+              className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#18181B] tracking-tight leading-[1.14]"
+              highlightWords={["Completed", "Landmark"]}
+            />
+
+            <p className="text-sm sm:text-base text-stone-600 max-w-xl">
+              100% completed, BU-approved row houses, bungalows, and plots with operational clubhouses in the Pal Gauravpath & 2nd Ring Road corridor.
+            </p>
+          </div>
 
           {/* Shreepad-Style All Properties Pill Button */}
-          <FadeIn direction="up" delay={0.1}>
-            <button
-              onClick={() => setActiveTab("all")}
-              className="inline-flex items-center gap-2 bg-[#B4833E] hover:bg-[#8F642B] text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-full shadow-md transition-all active:scale-95 cursor-pointer shrink-0"
-            >
-              <span>View All 4 Projects</span>
-              <ArrowRight className="size-4" />
-            </button>
-          </FadeIn>
+          <ArchitecturalReveal direction="up" delay={0.15}>
+            <Magnet padding={25} magnetStrength={0.2} disabled={false}>
+              <button
+                onClick={() => setActiveTab("all")}
+                className="inline-flex items-center gap-2 bg-[#B4833E] hover:bg-[#8F642B] text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-full shadow-md transition-all active:scale-95 cursor-pointer shrink-0"
+              >
+                <span>View All 4 Projects</span>
+                <ArrowRight className="size-4" />
+              </button>
+            </Magnet>
+          </ArchitecturalReveal>
         </div>
 
         {/* Filter Tabs (Shreepad Style with Animated Pill Indicator) */}
-        <FadeIn delay={0.15}>
+        <ArchitecturalReveal delay={0.2}>
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-[#E6E0D6]">
             {TABS.map((tab) => {
               const isActive = activeTab === tab.id
@@ -208,49 +213,49 @@ export function ProjectShowcase({
               )
             })}
           </div>
-        </FadeIn>
+        </ArchitecturalReveal>
 
-        {/* Shreepad 2-Column Luxury Project Cards Grid */}
+        {/* Shreepad 2-Column Luxury Project Cards Grid with Aceternity Hover Physics */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.45, ease: ARCHITECTURAL_EASE }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-8"
           >
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, idx) => (
               <div
                 key={project.id}
-                className="group rounded-3xl bg-white border border-[#E6E0D6] overflow-hidden shadow-xs hover:shadow-2xl hover:border-[#B4833E]/60 transition-all duration-500 flex flex-col justify-between"
+                className="group rounded-3xl bg-white border border-[#E6E0D6] hover:border-[#B4833E] transition-all duration-500 overflow-hidden shadow-xs hover:shadow-2xl flex flex-col justify-between will-change-transform"
               >
                 <div>
-                  {/* Image Container with Smooth Zoom on Hover */}
-                  <div className="relative h-[290px] sm:h-[350px] w-full overflow-hidden bg-stone-100">
-                    <Image
+                  {/* Image Container with Architectural Curtain Reveal & Aceternity Zoom */}
+                  <div className="relative h-[300px] sm:h-[370px] w-full overflow-hidden bg-stone-100">
+                    <ArchitecturalImage
                       src={project.image}
                       alt={project.name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 650px"
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      containerClassName="w-full h-full"
+                      imageClassName="group-hover:scale-108 transition-transform duration-700 ease-out"
+                      delay={idx * 0.1}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/25 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/25 to-transparent z-10 pointer-events-none" />
 
                     {/* Floating Badges */}
-                    <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
+                    <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
                       <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/90 backdrop-blur-md text-white text-xs font-bold tracking-wide shadow-md">
                         <span className="size-1.5 rounded-full bg-white animate-pulse" />
                         <span>{project.statusBadge}</span>
                       </div>
 
-                      <div className="px-3.5 py-1 rounded-full bg-white/90 backdrop-blur-md text-stone-900 text-xs font-bold border border-white/50 shadow-md">
+                      <div className="px-3.5 py-1 rounded-full bg-white/95 backdrop-blur-md text-stone-900 text-xs font-bold border border-white/50 shadow-md">
                         <span>Starting {project.startingPrice}</span>
                       </div>
                     </div>
 
                     {/* Image Title Overlay */}
-                    <div className="absolute bottom-5 left-5 right-5 text-white z-10">
+                    <div className="absolute bottom-5 left-5 right-5 text-white z-20 transition-transform duration-500 group-hover:-translate-y-2">
                       <div className="flex items-center gap-1.5 text-xs text-[#DFC8A7] mb-1">
                         <MapPin className="size-3.5 shrink-0" />
                         <span>{project.location}</span>
@@ -261,6 +266,30 @@ export function ProjectShowcase({
                       <p className="text-xs sm:text-sm text-stone-200 mt-0.5">
                         {project.subtitle}
                       </p>
+                    </div>
+
+                    {/* Aceternity Frosted Warm-Alabaster Glass Tray (Slides up on Hover) */}
+                    <div className="absolute inset-x-3 bottom-3 z-30 translate-y-[120%] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none p-3.5 rounded-2xl bg-[#FAF8F5]/95 backdrop-blur-md border border-[#DFC8A7] shadow-xl text-stone-900">
+                      <div className="flex items-center justify-between gap-2 text-xs">
+                        <div>
+                          <span className="text-[10px] uppercase font-bold text-stone-500 block">Carpet Area</span>
+                          <span className="font-bold text-stone-900">{project.carpetArea}</span>
+                        </div>
+                        <div className="h-6 w-px bg-[#E6E0D6]" />
+                        <div>
+                          <span className="text-[10px] uppercase font-bold text-stone-500 block">Vastu Status</span>
+                          <span className="font-bold text-emerald-700 flex items-center gap-1">
+                            <Sparkles className="size-3 text-[#B4833E]" /> 100% East/North
+                          </span>
+                        </div>
+                        <div className="h-6 w-px bg-[#E6E0D6]" />
+                        <div>
+                          <span className="text-[10px] uppercase font-bold text-stone-500 block">Configuration</span>
+                          <span className="font-bold text-[#B4833E]">
+                            {project.name.includes("Mahel") ? "Palatial Villa" : "3 & 4 BHK"}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -295,8 +324,8 @@ export function ProjectShowcase({
 
                     {/* Highlights List */}
                     <div className="space-y-2 pt-1 text-xs text-stone-700">
-                      {project.features.map((feat, idx) => (
-                        <div key={idx} className="flex items-start gap-2">
+                      {project.features.map((feat, fIdx) => (
+                        <div key={fIdx} className="flex items-start gap-2">
                           <CheckCircle2 className="size-4 text-[#15803D] shrink-0 mt-0.5" />
                           <span className="leading-snug">{feat}</span>
                         </div>
@@ -305,31 +334,37 @@ export function ProjectShowcase({
                   </div>
                 </div>
 
-                {/* Card Action Buttons */}
+                {/* Card Action Buttons with Desktop Magnet */}
                 <div className="p-6 sm:p-7 pt-0 flex flex-wrap items-center gap-3">
-                  <button
-                    onClick={() => onOpenVisitModal(project.name)}
-                    className="flex-1 bg-[#B4833E] hover:bg-[#8F642B] text-white font-bold py-3 px-4 rounded-full text-xs uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <Calendar className="size-3.5" />
-                    <span>Book Site Visit</span>
-                  </button>
+                  <div className="flex-1 min-w-[150px]">
+                    <Magnet padding={25} magnetStrength={0.15} disabled={false} className="w-full">
+                      <button
+                        onClick={() => onOpenVisitModal(project.name)}
+                        className="w-full bg-[#B4833E] hover:bg-[#8F642B] text-white font-bold py-3.5 px-4 rounded-full text-xs uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <Calendar className="size-3.5" />
+                        <span>Book Site Visit</span>
+                      </button>
+                    </Magnet>
+                  </div>
 
-                  <a
-                    href={`https://wa.me/919904222000?text=${encodeURIComponent(
-                      project.whatsappText
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-3 rounded-full border border-emerald-600 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <MessageSquare className="size-3.5 text-emerald-600" />
-                    <span>WhatsApp Brochure</span>
-                  </a>
+                  <Magnet padding={25} magnetStrength={0.15} disabled={false}>
+                    <a
+                      href={`https://wa.me/919904222000?text=${encodeURIComponent(
+                        project.whatsappText
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-5 py-3.5 rounded-full border border-emerald-600 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+                    >
+                      <MessageSquare className="size-3.5 text-emerald-600" />
+                      <span>WhatsApp Brochure</span>
+                    </a>
+                  </Magnet>
 
                   <button
                     onClick={() => onSelectFloorPlan(project.id)}
-                    className="w-full sm:w-auto px-4 py-3 text-xs font-bold text-stone-700 hover:text-stone-950 hover:underline flex items-center justify-center gap-1 cursor-pointer"
+                    className="w-full sm:w-auto px-4 py-3.5 text-xs font-bold text-stone-700 hover:text-stone-950 hover:underline flex items-center justify-center gap-1 cursor-pointer"
                   >
                     <span>Floor Plans</span>
                     <ArrowRight className="size-3.5 text-[#B4833E]" />

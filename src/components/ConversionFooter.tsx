@@ -33,6 +33,7 @@ export const BANK_PARTNERS = [
   { name: "HDFC Bank", approval: "Digital Sanction in 48 Hrs" },
   { name: "ICICI Bank", approval: "Preferred Builder Rate" },
   { name: "Bank of Baroda", approval: "Lowest Processing Fee" },
+  { name: "Axis Bank", approval: "Pre-Approved Ready Projects" },
   { name: "Kotak Mahindra Bank", approval: "Fast-Track Approval" },
 ]
 
@@ -502,7 +503,7 @@ export function ConversionFooter() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                 {BANK_PARTNERS.map((bank, i) => (
                   <div
                     key={i}

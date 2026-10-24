@@ -2,6 +2,10 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import { motion, AnimatePresence } from "framer-motion"
+import { ARCHITECTURAL_EASE } from "@/components/ui/architectural-reveal"
+import { BlurFade } from "@/components/magicui/blur-fade"
+import Magnet from "@/components/Magnet"
 import {
   Compass,
   Maximize2,
@@ -326,132 +330,145 @@ export function FloorPlanExplorer({ onOpenPriceSheetModal }: FloorPlanExplorerPr
           </div>
         </div>
 
-        {/* MAIN BLUEPRINT EXPLORER CARD */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-[#E6E0D6] shadow-xl">
-          {/* Blueprint Image Preview Column */}
-          <div className="lg:col-span-7 space-y-4">
-            <div className="relative h-[380px] sm:h-[480px] w-full rounded-2xl overflow-hidden border border-[#E6E0D6] bg-[#FAF8F5] group">
-              <Image
-                src={activePlan.image}
-                alt={`${activePlan.title} Architectural Blueprint`}
-                fill
-                sizes="(max-width: 1024px) 100vw, 700px"
-                className="object-contain p-3 transition-transform duration-500 group-hover:scale-102"
-                priority
-              />
+        {/* MAIN BLUEPRINT EXPLORER CARD WITH ANIMATEPRESENCE CROSS-FADE */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${selectedProject}-${selectedUnitType}`}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35, ease: ARCHITECTURAL_EASE }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-[#E6E0D6] shadow-xl"
+          >
+            {/* Blueprint Image Preview Column */}
+            <div className="lg:col-span-7 space-y-4">
+              <div className="relative h-[380px] sm:h-[480px] w-full rounded-2xl overflow-hidden border border-[#E6E0D6] bg-[#FAF8F5] group">
+                <Image
+                  src={activePlan.image}
+                  alt={`${activePlan.title} Architectural Blueprint`}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 700px"
+                  className="object-contain p-3 transition-transform duration-500 group-hover:scale-102"
+                  priority
+                />
 
-              {/* Top Vastu Pill */}
-              <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 backdrop-blur-md text-emerald-300 border border-emerald-400/40 text-[11px] font-bold shadow-sm">
-                  <Sparkles className="size-3 text-emerald-400" />
-                  <span>100% East/North Vastu Entrance</span>
+                {/* Top Vastu Pill */}
+                <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 backdrop-blur-md text-emerald-300 border border-emerald-400/40 text-[11px] font-bold shadow-sm">
+                    <Sparkles className="size-3 text-emerald-400" />
+                    <span>100% East/North Vastu Entrance</span>
+                  </div>
+                </div>
+
+                {/* Bottom Right Zoom Lightbox Trigger */}
+                <button
+                  type="button"
+                  onClick={() => setIsLightboxOpen(true)}
+                  className="absolute bottom-4 right-4 z-10 px-3.5 py-2 rounded-xl bg-stone-950/85 hover:bg-stone-950 text-white text-xs font-semibold backdrop-blur-md flex items-center gap-1.5 shadow-lg transition-all cursor-pointer border border-white/15"
+                >
+                  <ZoomIn className="size-3.5 text-[#DFC8A7]" />
+                  <span>Zoom Lightbox</span>
+                </button>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between text-xs text-stone-500 px-1">
+                <span>*Physical room measurements verified on-site in Surat</span>
+                <span className="font-semibold text-[#B4833E]">Architectural CAD Blueprint</span>
+              </div>
+            </div>
+
+            {/* Room Dimensions & Specs Column */}
+            <div className="lg:col-span-5 space-y-6">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#B4833E]">
+                    {activePlan.projectName}
+                  </span>
+                  <span className="size-1 rounded-full bg-[#E6E0D6]" />
+                  <span className="text-xs text-stone-500 font-medium">
+                    {activePlan.plotArea}
+                  </span>
+                </div>
+                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 tracking-tight">
+                  {activePlan.title}
+                </h3>
+              </div>
+
+              {/* Quick Dimension Pill Strip */}
+              <div className="grid grid-cols-2 gap-3 p-4 rounded-xl bg-[#FAF8F5] border border-[#E6E0D6]">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">
+                    Super Built-Up Area
+                  </span>
+                  <span className="text-base font-bold text-stone-900">
+                    {activePlan.superBuiltUp}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">
+                    RERA Carpet Area
+                  </span>
+                  <span className="text-base font-bold text-[#15803D]">
+                    {activePlan.carpetArea}
+                  </span>
                 </div>
               </div>
 
-              {/* Bottom Right Zoom Lightbox Trigger */}
-              <button
-                type="button"
-                onClick={() => setIsLightboxOpen(true)}
-                className="absolute bottom-4 right-4 z-10 px-3.5 py-2 rounded-xl bg-stone-950/85 hover:bg-stone-950 text-white text-xs font-semibold backdrop-blur-md flex items-center gap-1.5 shadow-lg transition-all cursor-pointer border border-white/15"
-              >
-                <ZoomIn className="size-3.5 text-[#DFC8A7]" />
-                <span>Zoom Lightbox</span>
-              </button>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-between text-xs text-stone-500 px-1">
-              <span>*Physical room measurements verified on-site in Surat</span>
-              <span className="font-semibold text-[#B4833E]">Architectural CAD Blueprint</span>
-            </div>
-          </div>
-
-          {/* Room Dimensions & Specs Column */}
-          <div className="lg:col-span-5 space-y-6">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#B4833E]">
-                  {activePlan.projectName}
-                </span>
-                <span className="size-1 rounded-full bg-[#E6E0D6]" />
-                <span className="text-xs text-stone-500 font-medium">
-                  {activePlan.plotArea}
-                </span>
+              {/* Room Dimensions in Feet wrapped in BlurFade */}
+              <div className="space-y-2">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-900">
+                  Exact Room Dimensions (In Feet):
+                </h4>
+                <div className="divide-y divide-[#E6E0D6] border border-[#E6E0D6] rounded-xl overflow-hidden bg-white text-xs">
+                  {activePlan.dimensions.map((dim, idx) => (
+                    <BlurFade key={idx} delay={idx * 0.05} duration={0.3}>
+                      <div className="p-3 flex items-center justify-between hover:bg-[#FAF8F5]">
+                        <div>
+                          <span className="font-semibold text-stone-900 block">
+                            {dim.room}
+                          </span>
+                          <span className="text-[11px] text-stone-500">
+                            {dim.note}
+                          </span>
+                        </div>
+                        <span className="font-mono font-bold text-[#B4833E] text-xs bg-[#FAF8F5] px-2.5 py-1 rounded-lg border border-[#E6E0D6]">
+                          {dim.size}
+                        </span>
+                      </div>
+                    </BlurFade>
+                  ))}
+                </div>
               </div>
-              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 tracking-tight">
-                {activePlan.title}
-              </h3>
-            </div>
 
-            {/* Quick Dimension Pill Strip */}
-            <div className="grid grid-cols-2 gap-3 p-4 rounded-xl bg-[#FAF8F5] border border-[#E6E0D6]">
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">
-                  Super Built-Up Area
-                </span>
-                <span className="text-base font-bold text-stone-900">
-                  {activePlan.superBuiltUp}
-                </span>
+              {/* Vastu Note Pill */}
+              <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex items-start gap-2.5">
+                <Sparkles className="size-4 text-emerald-600 shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-bold block mb-0.5 text-emerald-800">
+                    Vastu Compliance Guarantee:
+                  </span>
+                  <p className="text-[11px] leading-relaxed text-emerald-700">
+                    {activePlan.vastuNotes}
+                  </p>
+                </div>
               </div>
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">
-                  RERA Carpet Area
-                </span>
-                <span className="text-base font-bold text-[#15803D]">
-                  {activePlan.carpetArea}
-                </span>
-              </div>
-            </div>
 
-            {/* Room Dimensions in Feet */}
-            <div className="space-y-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-stone-900">
-                Exact Room Dimensions (In Feet):
-              </h4>
-              <div className="divide-y divide-[#E6E0D6] border border-[#E6E0D6] rounded-xl overflow-hidden bg-white text-xs">
-                {activePlan.dimensions.map((dim, idx) => (
-                  <div key={idx} className="p-3 flex items-center justify-between hover:bg-[#FAF8F5]">
-                    <div>
-                      <span className="font-semibold text-stone-900 block">
-                        {dim.room}
-                      </span>
-                      <span className="text-[11px] text-stone-500">
-                        {dim.note}
-                      </span>
-                    </div>
-                    <span className="font-mono font-bold text-[#B4833E] text-xs bg-[#FAF8F5] px-2.5 py-1 rounded-lg border border-[#E6E0D6]">
-                      {dim.size}
-                    </span>
-                  </div>
-                ))}
+              {/* WhatsApp CTA Action with Desktop Magnet */}
+              <div className="pt-2">
+                <Magnet padding={25} magnetStrength={0.15} disabled={false} className="w-full">
+                  <button
+                    onClick={handleWhatsAppInquiry}
+                    className="w-full bg-[#15803D] hover:bg-[#166534] text-white font-bold py-3.5 px-4 rounded-xl min-h-12 text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md cursor-pointer transition-all active:scale-98"
+                  >
+                    <MessageSquare className="size-4 shrink-0" />
+                    <span>Get Exact Unit Pricing & Availability on WhatsApp</span>
+                    <ArrowRight className="size-4 shrink-0" />
+                  </button>
+                </Magnet>
               </div>
             </div>
-
-            {/* Vastu Note Pill */}
-            <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex items-start gap-2.5">
-              <Sparkles className="size-4 text-emerald-600 shrink-0 mt-0.5" />
-              <div>
-                <span className="font-bold block mb-0.5 text-emerald-800">
-                  Vastu Compliance Guarantee:
-                </span>
-                <p className="text-[11px] leading-relaxed text-emerald-700">
-                  {activePlan.vastuNotes}
-                </p>
-              </div>
-            </div>
-
-            {/* WhatsApp CTA Action */}
-            <div className="pt-2">
-              <button
-                onClick={handleWhatsAppInquiry}
-                className="w-full bg-[#15803D] hover:bg-[#166534] text-white font-bold py-3.5 px-4 rounded-xl min-h-12 text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md cursor-pointer transition-all active:scale-98"
-              >
-                <MessageSquare className="size-4 shrink-0" />
-                <span>Get Exact Unit Pricing & Availability on WhatsApp</span>
-                <ArrowRight className="size-4 shrink-0" />
-              </button>
-            </div>
-          </div>
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* FULLSCREEN BLUEPRINT LIGHTBOX */}

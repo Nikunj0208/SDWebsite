@@ -1,21 +1,15 @@
 "use client"
 
-import Image from "next/image"
 import { motion } from "framer-motion"
 import { NumberTicker } from "@/components/magicui/number-ticker"
-import { FadeIn, StaggerContainer, staggerItem } from "@/components/ui/motion"
+import { ArchitecturalReveal, ARCHITECTURAL_EASE } from "@/components/ui/architectural-reveal"
+import { EditorialHeading } from "@/components/ui/editorial-heading"
+import { ArchitecturalImage } from "@/components/ui/architectural-image"
+import Magnet from "@/components/Magnet"
 import {
   ShieldCheck,
-  CheckCircle2,
   Calendar,
-  Sparkles,
   ArrowRight,
-  Building2,
-  Users,
-  Clock,
-  Layers,
-  MapPin,
-  Check,
   Percent,
   KeyRound,
   FileCheck,
@@ -43,21 +37,21 @@ export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
         {/* SHREEPAD-STYLE "ABOUT GROUP" SPLIT EDITORIAL SECTION      */}
         {/* ========================================================= */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
-          {/* Left Column: Asymmetric Architectural Photo Collage */}
+          {/* Left Column: Architectural Photo Collage with Curtain Wipe */}
           <div className="lg:col-span-6 relative">
-            <FadeIn direction="right" duration={0.8}>
-              <div className="grid grid-cols-12 gap-3 relative">
-                {/* Main Large Image */}
-                <div className="col-span-8 relative h-[380px] sm:h-[440px] rounded-3xl overflow-hidden border border-[#E6E0D6] shadow-xl group">
-                  <Image
+            <ArchitecturalReveal direction="right" duration={1.0}>
+              <div className="grid grid-cols-12 gap-3.5 relative">
+                {/* Main Large Elevation Photo */}
+                <div className="col-span-8 relative h-[380px] sm:h-[450px] rounded-3xl overflow-hidden border border-[#E6E0D6] shadow-xl group">
+                  <ArchitecturalImage
                     src="/images/springhill-campus.jpeg"
                     alt="Silverstone Ready to Live Campus Surat"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 450px"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    containerClassName="w-full h-full"
+                    imageClassName="group-hover:scale-105 transition-transform duration-700 ease-out"
+                    delay={0.1}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-stone-950/20 to-transparent" />
-                  <div className="absolute bottom-5 left-5 right-5 text-white">
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950/75 via-stone-950/20 to-transparent pointer-events-none z-10" />
+                  <div className="absolute bottom-5 left-5 right-5 text-white z-20">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-[#DFC8A7] block mb-1">
                       DELIVERED ARCHITECTURE
                     </span>
@@ -68,30 +62,34 @@ export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
                 </div>
 
                 {/* Secondary Offset Stacked Images */}
-                <div className="col-span-4 space-y-3">
-                  <div className="relative h-[185px] sm:h-[212px] rounded-2xl overflow-hidden border border-[#E6E0D6] shadow-md group">
-                    <Image
+                <div className="col-span-4 space-y-3.5">
+                  <div className="relative h-[185px] sm:h-[216px] rounded-2xl overflow-hidden border border-[#E6E0D6] shadow-md group">
+                    <ArchitecturalImage
                       src="/images/rajmahel/fountain.jpg"
                       alt="Central Water Fountain Raj Mahel"
-                      fill
-                      sizes="200px"
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      containerClassName="w-full h-full"
+                      delay={0.25}
                     />
                   </div>
 
-                  <div className="relative h-[185px] sm:h-[216px] rounded-2xl overflow-hidden border border-[#E6E0D6] shadow-md group">
-                    <Image
+                  <div className="relative h-[185px] sm:h-[220px] rounded-2xl overflow-hidden border border-[#E6E0D6] shadow-md group">
+                    <ArchitecturalImage
                       src="/images/applewood/applewood-1.jpg"
                       alt="Applewood Homes Surat"
-                      fill
-                      sizes="200px"
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      containerClassName="w-full h-full"
+                      delay={0.4}
                     />
                   </div>
                 </div>
 
                 {/* Floating Trust Badge */}
-                <div className="absolute -bottom-5 left-6 bg-[#18181B] text-white p-4 rounded-2xl border border-stone-700 shadow-2xl flex items-center gap-3.5 z-10 transition-transform hover:scale-105">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.5, ease: ARCHITECTURAL_EASE }}
+                  className="absolute -bottom-5 left-6 bg-[#18181B] text-white p-4 rounded-2xl border border-stone-700 shadow-2xl flex items-center gap-3.5 z-30 transition-transform hover:scale-105"
+                >
                   <div className="size-11 rounded-xl bg-[#B4833E]/20 text-[#DFC8A7] flex items-center justify-center font-bold">
                     <ShieldCheck className="size-6" />
                   </div>
@@ -103,77 +101,81 @@ export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
                       Zero Possession Delay Risk
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </div>
-            </FadeIn>
+            </ArchitecturalReveal>
           </div>
 
-          {/* Right Column: Editorial Copy */}
+          {/* Right Column: Editorial Copy with Masked Split-Heading */}
           <div className="lg:col-span-6 space-y-6">
-            <FadeIn direction="left" duration={0.6}>
+            <ArchitecturalReveal direction="left" duration={0.6}>
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF4EA] border border-[#DFC8A7] text-[11px] font-bold tracking-[0.2em] uppercase text-[#B4833E]">
                 <span>THE SILVERSTONE STANDARD</span>
               </div>
-            </FadeIn>
+            </ArchitecturalReveal>
 
-            <FadeIn direction="left" delay={0.1} duration={0.7}>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#18181B] tracking-tight leading-[1.14]">
-                Why Wait 4 Years for a Render When Your Home is Ready Today?
-              </h2>
-            </FadeIn>
+            {/* Masked Editorial Heading */}
+            <EditorialHeading
+              text="Why Wait 4 Years for a Render When Your Home is Ready to Live Today?"
+              tag="h2"
+              className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#18181B] tracking-tight leading-[1.14]"
+              highlightWords={["Ready", "Today"]}
+            />
 
-            <FadeIn direction="left" delay={0.2} duration={0.7}>
+            <ArchitecturalReveal direction="left" delay={0.15} duration={0.8}>
               <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
                 For over a decade, Silverstone Developers has stood apart in Surat by delivering certainty instead of promises. While conventional builders sell 3D renders with years of construction delay, <strong className="text-stone-900 font-semibold">every Silverstone residence is already completed, BU-certified, and ready for immediate key handover</strong>.
               </p>
-            </FadeIn>
+            </ArchitecturalReveal>
 
-            <FadeIn direction="left" delay={0.3} duration={0.7}>
+            <ArchitecturalReveal direction="left" delay={0.25} duration={0.8}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 text-xs text-stone-800">
-                <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-colors">
+                <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-all hover:shadow-md">
                   <Percent className="size-4 text-[#15803D] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-stone-900">0% GST Surcharge</strong>
+                    <strong className="block text-stone-900 font-bold">0% GST Surcharge</strong>
                     <span className="text-stone-500">Save 5% tax on ready BU inventory</span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-colors">
+                <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-all hover:shadow-md">
                   <KeyRound className="size-4 text-[#15803D] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-stone-900">Zero Rent & EMI Drain</strong>
+                    <strong className="block text-stone-900 font-bold">Zero Rent & EMI Drain</strong>
                     <span className="text-stone-500">Immediate move-in, stop paying rent</span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-colors">
+                <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-all hover:shadow-md">
                   <FileCheck className="size-4 text-[#15803D] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-stone-900">Verified Space & Sunlight</strong>
+                    <strong className="block text-stone-900 font-bold">Verified Space & Sunlight</strong>
                     <span className="text-stone-500">Inspect real room sizes & cross-ventilation</span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-colors">
+                <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-white border border-[#E6E0D6] shadow-xs hover:border-[#B4833E] transition-all hover:shadow-md">
                   <Landmark className="size-4 text-[#15803D] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-stone-900">Pre-Approved Bank Loans</strong>
+                    <strong className="block text-stone-900 font-bold">Pre-Approved Bank Loans</strong>
                     <span className="text-stone-500">Fast sanction from SBI, HDFC & ICICI</span>
                   </div>
                 </div>
               </div>
-            </FadeIn>
+            </ArchitecturalReveal>
 
-            <FadeIn direction="left" delay={0.4} duration={0.7}>
+            <ArchitecturalReveal direction="left" delay={0.35} duration={0.8}>
               <div className="flex flex-wrap items-center gap-3.5 pt-2">
-                <button
-                  onClick={handleScheduleVisit}
-                  className="inline-flex items-center gap-2 bg-[#B4833E] hover:bg-[#8F642B] text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-full shadow-md transition-transform active:scale-95 cursor-pointer group"
-                >
-                  <Calendar className="size-4" />
-                  <span>Schedule Site Inspection</span>
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </button>
+                <Magnet padding={40} magnetStrength={0.25} disabled={false}>
+                  <button
+                    onClick={handleScheduleVisit}
+                    className="inline-flex items-center gap-2 bg-[#B4833E] hover:bg-[#8F642B] text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-full shadow-md transition-transform active:scale-95 cursor-pointer group"
+                  >
+                    <Calendar className="size-4" />
+                    <span>Schedule Site Inspection</span>
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  </button>
+                </Magnet>
 
                 <a
                   href="#projects"
@@ -182,7 +184,7 @@ export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
                   <span>Explore 4 Campuses →</span>
                 </a>
               </div>
-            </FadeIn>
+            </ArchitecturalReveal>
           </div>
         </div>
 
@@ -192,7 +194,7 @@ export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
         <div id="counter" className="pt-10 border-t border-[#E6E0D6]">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {/* Stat 1: 100% */}
-            <FadeIn delay={0.1} duration={0.6}>
+            <ArchitecturalReveal delay={0.1} duration={0.7}>
               <div className="p-6 sm:p-7 rounded-3xl bg-white border border-[#E6E0D6] shadow-xs text-center sm:text-left hover:border-[#B4833E] transition-all hover:shadow-lg group">
                 <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#15803D] block mb-2">
                   LEGAL COMPLETION
@@ -207,10 +209,10 @@ export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
                   100% Ready Possession Handover
                 </p>
               </div>
-            </FadeIn>
+            </ArchitecturalReveal>
 
             {/* Stat 2: 500+ */}
-            <FadeIn delay={0.2} duration={0.6}>
+            <ArchitecturalReveal delay={0.2} duration={0.7}>
               <div className="p-6 sm:p-7 rounded-3xl bg-white border border-[#E6E0D6] shadow-xs text-center sm:text-left hover:border-[#B4833E] transition-all hover:shadow-lg group">
                 <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B4833E] block mb-2">
                   SETTLED RESIDENTS
@@ -225,10 +227,10 @@ export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
                   Thriving Surat Gated Communities
                 </p>
               </div>
-            </FadeIn>
+            </ArchitecturalReveal>
 
             {/* Stat 3: 0 Days */}
-            <FadeIn delay={0.3} duration={0.6}>
+            <ArchitecturalReveal delay={0.3} duration={0.7}>
               <div className="p-6 sm:p-7 rounded-3xl bg-white border border-[#E6E0D6] shadow-xs text-center sm:text-left hover:border-[#B4833E] transition-all hover:shadow-lg group">
                 <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#15803D] block mb-2">
                   CONSTRUCTION RISK
@@ -243,25 +245,25 @@ export function LegacySection({ onOpenVisitModal }: LegacySectionProps) {
                   Keys Handed Over Immediately
                 </p>
               </div>
-            </FadeIn>
+            </ArchitecturalReveal>
 
-            {/* Stat 4: 4+ Flagship */}
-            <FadeIn delay={0.4} duration={0.6}>
+            {/* Stat 4: 15+ Years */}
+            <ArchitecturalReveal delay={0.4} duration={0.7}>
               <div className="p-6 sm:p-7 rounded-3xl bg-white border border-[#E6E0D6] shadow-xs text-center sm:text-left hover:border-[#B4833E] transition-all hover:shadow-lg group">
                 <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B4833E] block mb-2">
-                  SURAT PORTFOLIO
+                  ESTABLISHED HERITAGE
                 </span>
                 <div className="text-4xl sm:text-6xl font-serif font-black text-[#B4833E] tracking-tight">
-                  <NumberTicker value={4} suffix="+" />
+                  <NumberTicker value={15} suffix="+ Years" />
                 </div>
                 <h4 className="text-sm font-bold text-stone-900 mt-2">
-                  Delivered Campuses
+                  Architectural Excellence
                 </h4>
                 <p className="text-xs text-stone-500 mt-0.5">
                   Spring Hill, Raj Mahel, Applewood & Mahel
                 </p>
               </div>
-            </FadeIn>
+            </ArchitecturalReveal>
           </div>
         </div>
       </div>

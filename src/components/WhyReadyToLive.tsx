@@ -2,7 +2,6 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { FadeIn, StaggerContainer } from "@/components/ui/motion"
 import {
   Check,
   X,
@@ -10,22 +9,35 @@ import {
   Sparkles,
   Calendar,
   Building,
-  HeartHandshake,
   Car,
   Shield,
   Activity,
   Smile,
   Trees,
   Sun,
-  Award,
-  ArrowRight,
   BadgePercent,
   CheckCircle2,
+  Landmark,
 } from "lucide-react"
+import { BlurFade } from "@/components/magicui/blur-fade"
+import { BentoGrid } from "@/components/magicui/bento-grid"
+import { Marquee } from "@/components/magicui/marquee"
+import { EditorialHeading } from "@/components/ui/editorial-heading"
+import { ArchitecturalReveal } from "@/components/ui/architectural-reveal"
+import Magnet from "@/components/Magnet"
 
 interface WhyReadyToLiveProps {
   onOpenVisitModal?: (project?: string) => void
 }
+
+const APPROVED_BANKS = [
+  { name: "State Bank of India", approval: "Instant Pre-Approved", code: "SBI" },
+  { name: "HDFC Bank", approval: "Digital Sanction in 48 Hrs", code: "HDFC" },
+  { name: "ICICI Bank", approval: "Preferred Builder Rate", code: "ICICI" },
+  { name: "Bank of Baroda", approval: "Lowest Processing Fee", code: "BOB" },
+  { name: "Axis Bank", approval: "Pre-Approved Ready Projects", code: "AXIS" },
+  { name: "Kotak Mahindra Bank", approval: "Fast-Track Approval", code: "KOTAK" },
+]
 
 export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
   // Shreepad-Style Value Proposition Cards with Giant Watermark Numbers (01, 02, 03)
@@ -98,7 +110,7 @@ export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
       description:
         "Dedicated serene worship complex surrounded by peaceful reflection gardens, ensuring a tranquil start to every morning.",
       image: "/images/rajmahel/fountain.jpg",
-      className: "md:col-span-2 md:row-span-1",
+      className: "md:col-span-2",
       icon: Sun,
     },
     {
@@ -109,7 +121,7 @@ export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
       description:
         "Shaded gazebos and anti-skid walking circuits designed for parents and grandparents to relax in comfort.",
       image: "/images/rajmahel/03 Garden.jpg",
-      className: "md:col-span-1 md:row-span-1",
+      className: "md:col-span-1",
       icon: Trees,
     },
     {
@@ -120,7 +132,7 @@ export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
       description:
         "Air-conditioned fitness center, table tennis, carrom lounge, and multipurpose private celebration banquet hall.",
       image: "/images/mahel/banquet.jpg",
-      className: "md:col-span-1 md:row-span-1",
+      className: "md:col-span-1",
       icon: Activity,
     },
     {
@@ -131,7 +143,7 @@ export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
       description:
         "Dedicated vehicle-free podium with safety swings, climbing fixtures, and open turf for unrestricted childhood joy.",
       image: "/images/mahel/play-area.jpg",
-      className: "md:col-span-2 md:row-span-1",
+      className: "md:col-span-2",
       icon: Smile,
     },
     {
@@ -142,7 +154,7 @@ export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
       description:
         "Main security checkpoint with automated boom barriers, smart visitor intercom, and perimeter infrared surveillance.",
       image: "/images/rajmahel/entrance-gate.jpg",
-      className: "md:col-span-1 md:row-span-1",
+      className: "md:col-span-1",
       icon: Shield,
     },
     {
@@ -153,7 +165,7 @@ export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
       description:
         "Wide allotted paved parking slots equipped with dedicated electric vehicle charging points and easy vehicular turning radii.",
       image: "/images/mahel/terrace.jpg",
-      className: "md:col-span-2 md:row-span-1",
+      className: "md:col-span-2",
       icon: Car,
     },
   ]
@@ -174,22 +186,26 @@ export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
         {/* 1. SHREEPAD-STYLE 3-COLUMN VALUE PILLARS (01, 02, 03)     */}
         {/* ========================================================= */}
         <div className="space-y-10">
-          <FadeIn direction="up">
-            <div className="text-center max-w-2xl mx-auto space-y-2">
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <ArchitecturalReveal direction="up">
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#B4833E]">
                 WHY CHOOSE SILVERSTONE
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#18181B] tracking-tight">
-                The Proven Advantage of Ready to Live
-              </h2>
-            </div>
-          </FadeIn>
+            </ArchitecturalReveal>
+
+            <EditorialHeading
+              text="The Proven Advantage of Ready to Live"
+              tag="h2"
+              className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#18181B] tracking-tight"
+              highlightWords={["Proven", "Advantage"]}
+            />
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {VALUE_PILLARS.map((pillar, idx) => {
               const IconComponent = pillar.icon
               return (
-                <FadeIn key={pillar.num} delay={0.1 * idx} duration={0.6}>
+                <BlurFade key={pillar.num} delay={idx * 0.08} duration={0.5}>
                   <div className="relative p-7 rounded-3xl bg-white border border-[#E6E0D6] shadow-xs hover:shadow-xl hover:border-[#B4833E]/60 transition-all duration-300 group overflow-hidden flex flex-col justify-between h-full">
                     {/* Watermark Number in Outline (Shreepad Style) */}
                     <span className="absolute top-2 right-4 text-6xl sm:text-7xl font-serif font-black text-stone-100 select-none pointer-events-none group-hover:text-[#B4833E]/10 transition-colors">
@@ -216,51 +232,52 @@ export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
                       </span>
                     </div>
                   </div>
-                </FadeIn>
+                </BlurFade>
               )
             })}
           </div>
         </div>
 
         {/* ========================================================= */}
-        {/* 2. THE SIDE-BY-SIDE COMPARISON TABLE                      */}
+        {/* 2. THE SIDE-BY-SIDE COMPARISON TABLE WITH BLURFADE        */}
         {/* ========================================================= */}
         <div className="space-y-10">
-          <FadeIn direction="up">
-            <div className="max-w-2xl space-y-2">
+          <div className="max-w-2xl space-y-2">
+            <ArchitecturalReveal direction="up">
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#B4833E]">
                 DECISION MATRIX
               </span>
-              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#18181B] tracking-tight">
-                Ready to Live vs. 4-Year Construction Wait
-              </h2>
-            </div>
-          </FadeIn>
+            </ArchitecturalReveal>
 
-          <FadeIn delay={0.15}>
-            <div className="rounded-3xl bg-white border border-[#E6E0D6] shadow-md overflow-hidden">
-              {/* Header */}
-              <div className="grid grid-cols-1 md:grid-cols-12 border-b border-[#E6E0D6] bg-stone-100 text-xs font-bold uppercase tracking-wider">
-                <div className="p-4 md:col-span-4 text-stone-700">
-                  Parameter
-                </div>
-                <div className="p-4 md:col-span-4 text-rose-800 bg-rose-50/60 md:border-l border-[#E6E0D6] flex items-center gap-2">
-                  <X className="size-4 text-rose-600 shrink-0" />
-                  <span>Typical Under-Construction Booking</span>
-                </div>
-                <div className="p-4 md:col-span-4 text-emerald-900 bg-emerald-50/70 md:border-l border-[#E6E0D6] flex items-center gap-2">
-                  <Check className="size-4 text-emerald-600 shrink-0 font-bold" />
-                  <span>Silverstone Ready to Live</span>
-                </div>
+            <EditorialHeading
+              text="Ready to Live vs 4-Year Construction Wait"
+              tag="h2"
+              className="text-3xl sm:text-4xl font-serif font-bold text-[#18181B] tracking-tight"
+              highlightWords={["Ready"]}
+            />
+          </div>
+
+          <div className="rounded-3xl bg-white border border-[#E6E0D6] shadow-md overflow-hidden">
+            {/* Header */}
+            <div className="grid grid-cols-1 md:grid-cols-12 border-b border-[#E6E0D6] bg-stone-100 text-xs font-bold uppercase tracking-wider">
+              <div className="p-4 md:col-span-4 text-stone-700">
+                Parameter
               </div>
+              <div className="p-4 md:col-span-4 text-rose-800 bg-rose-50/60 md:border-l border-[#E6E0D6] flex items-center gap-2">
+                <X className="size-4 text-rose-600 shrink-0" />
+                <span>Typical Under-Construction Booking</span>
+              </div>
+              <div className="p-4 md:col-span-4 text-emerald-900 bg-emerald-50/70 md:border-l border-[#E6E0D6] flex items-center gap-2">
+                <Check className="size-4 text-emerald-600 shrink-0 font-bold" />
+                <span>Silverstone Ready to Live</span>
+              </div>
+            </div>
 
-              {/* Rows */}
-              <div className="divide-y divide-[#E6E0D6]">
-                {COMPARISON_ITEMS.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="grid grid-cols-1 md:grid-cols-12 text-xs sm:text-sm hover:bg-[#FAF8F5]/80 transition-colors"
-                  >
+            {/* Rows wrapped in staggered BlurFade transitions */}
+            <div className="divide-y divide-[#E6E0D6]">
+              {COMPARISON_ITEMS.map((item, idx) => (
+                <BlurFade key={idx} delay={idx * 0.08} duration={0.4}>
+                  <div className="grid grid-cols-1 md:grid-cols-12 text-xs sm:text-sm hover:bg-[#FAF8F5]/80 transition-colors">
                     <div className="p-4 sm:p-5 md:col-span-4 font-serif font-bold text-stone-900 text-sm sm:text-base flex items-center">
                       {item.feature}
                     </div>
@@ -279,108 +296,156 @@ export function WhyReadyToLive({ onOpenVisitModal }: WhyReadyToLiveProps) {
                       <span className="leading-relaxed">{item.silverstone}</span>
                     </div>
                   </div>
-                ))}
+                </BlurFade>
+              ))}
+            </div>
+
+            {/* Bottom Strip */}
+            <div className="p-5 sm:p-6 bg-[#FAF4EA] border-t border-[#DFC8A7] flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="size-10 rounded-xl bg-white border border-[#DFC8A7] flex items-center justify-center text-[#B4833E] shrink-0">
+                  <BadgePercent className="size-5" />
+                </div>
+                <div>
+                  <h4 className="font-serif font-bold text-stone-900 text-sm sm:text-base leading-tight">
+                    Zero GST on Ready Inventory
+                  </h4>
+                  <p className="text-xs text-stone-600">
+                    Under-construction attracts 5% to 12% extra GST. Ready homes with BU/OC attract 0% GST.
+                  </p>
+                </div>
               </div>
 
-              {/* Bottom Strip */}
-              <div className="p-5 sm:p-6 bg-[#FAF4EA] border-t border-[#DFC8A7] flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="size-10 rounded-xl bg-white border border-[#DFC8A7] flex items-center justify-center text-[#B4833E] shrink-0">
-                    <BadgePercent className="size-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-serif font-bold text-stone-900 text-sm sm:text-base leading-tight">
-                      Zero GST on Ready Inventory
-                    </h4>
-                    <p className="text-xs text-stone-600">
-                      Under-construction attracts 5% to 12% extra GST. Ready homes with BU/OC attract 0% GST.
-                    </p>
-                  </div>
-                </div>
-
+              <Magnet padding={25} magnetStrength={0.2} disabled={false}>
                 <button
                   onClick={handleBookVisit}
-                  className="shrink-0 bg-[#B4833E] hover:bg-[#8F642B] text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-5 py-3 rounded-full shadow-sm transition-transform active:scale-95 cursor-pointer flex items-center gap-2"
+                  className="shrink-0 bg-[#B4833E] hover:bg-[#8F642B] text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-6 py-3.5 rounded-full shadow-sm transition-transform active:scale-95 cursor-pointer flex items-center gap-2"
                 >
                   <Calendar className="size-4" />
                   <span>Verify at Actual Site</span>
                 </button>
-              </div>
+              </Magnet>
             </div>
-          </FadeIn>
+          </div>
         </div>
 
         {/* ========================================================= */}
-        {/* 3. DELIVERED LIFESTYLE AMENITIES BENTO GRID               */}
+        {/* 3. APPROVED HOME LOAN BANKS INFINITE SMOOTH MARQUEE       */}
+        {/* ========================================================= */}
+        <div className="space-y-6">
+          <div className="text-center max-w-xl mx-auto space-y-2">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#15803D] bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200 inline-block">
+              100% TITLE CLEAR & BANK APPROVED
+            </span>
+            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 tracking-tight">
+              Pre-Approved Home Loans with Immediate Disbursement
+            </h3>
+            <p className="text-xs text-stone-600">
+              Zero construction waiting means top PSU and private banks disburse up to 80% loan value immediately.
+            </p>
+          </div>
+
+          <div className="relative overflow-hidden rounded-2xl bg-white border border-[#E6E0D6] py-4 shadow-xs">
+            <Marquee pauseOnHover className="py-2 [--gap:1.5rem] [--duration:30s]">
+              {APPROVED_BANKS.map((bank, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#FAF8F5] border border-[#E6E0D6] hover:border-[#B4833E] transition-colors shrink-0"
+                >
+                  <div className="size-8 rounded-lg bg-[#FAF4EA] border border-[#DFC8A7] flex items-center justify-center text-[#B4833E] font-bold text-xs">
+                    <Landmark className="size-4" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold text-stone-900 block leading-tight">
+                      {bank.name}
+                    </span>
+                    <span className="text-[10px] text-[#15803D] font-semibold block">
+                      {bank.approval}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </Marquee>
+          </div>
+        </div>
+
+        {/* ========================================================= */}
+        {/* 4. DELIVERED LIFESTYLE AMENITIES BENTO GRID               */}
         {/* ========================================================= */}
         <div id="amenities" className="space-y-10">
-          <FadeIn direction="up">
-            <div className="max-w-2xl space-y-2">
+          <div className="max-w-2xl space-y-2">
+            <ArchitecturalReveal direction="up">
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#B4833E]">
                 DELIVERED LIFESTYLE
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#18181B] tracking-tight">
-                Operational Amenities for Daily Joy
-              </h2>
-              <p className="text-sm text-stone-600">
-                Lush senior decks, vehicle-free play podiums, and grand temple complexes already in active use by 500+ settled families.
-              </p>
-            </div>
-          </FadeIn>
+            </ArchitecturalReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <EditorialHeading
+              text="Operational Amenities for Daily Joy"
+              tag="h2"
+              className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#18181B] tracking-tight"
+              highlightWords={["Operational", "Daily"]}
+            />
+
+            <p className="text-sm text-stone-600">
+              Lush senior decks, vehicle-free play podiums, and grand temple complexes already in active use by 500+ settled families.
+            </p>
+          </div>
+
+          <BentoGrid className="grid-cols-1 md:grid-cols-3 auto-rows-[22rem]">
             {BENTO_AMENITIES.map((amenity, idx) => {
               const IconComp = amenity.icon
               return (
-                <FadeIn key={amenity.id} delay={0.08 * idx} duration={0.6} className={amenity.className}>
-                  <div className="group rounded-3xl bg-white border border-[#E6E0D6] overflow-hidden shadow-xs hover:shadow-xl hover:border-[#B4833E]/50 transition-all duration-500 flex flex-col justify-between h-full">
-                    {/* Amenity Image Strip */}
-                    <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-stone-100">
-                      <Image
-                        src={amenity.image}
-                        alt={amenity.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/20 to-transparent" />
+                <div
+                  key={amenity.id}
+                  className={`group relative rounded-3xl bg-white border border-[#E6E0D6] overflow-hidden shadow-xs hover:shadow-2xl hover:border-[#B4833E]/60 transition-all duration-500 flex flex-col justify-between ${amenity.className}`}
+                >
+                  {/* Amenity Image Strip with smooth zoom */}
+                  <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-stone-100">
+                    <Image
+                      src={amenity.image}
+                      alt={amenity.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-108"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/20 to-transparent pointer-events-none" />
 
-                      <div className="absolute top-4 left-4 z-10">
-                        <span className="px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-[10px] font-bold tracking-wider uppercase text-stone-900 border border-stone-200 shadow-xs">
-                          {amenity.category}
+                    <div className="absolute top-4 left-4 z-10">
+                      <span className="px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-[10px] font-bold tracking-wider uppercase text-stone-900 border border-stone-200 shadow-xs">
+                        {amenity.category}
+                      </span>
+                    </div>
+
+                    <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/70 backdrop-blur-md text-emerald-300 border border-emerald-400/40 text-[10px] font-bold">
+                      <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Live & Active</span>
+                    </div>
+
+                    <div className="absolute bottom-4 left-4 right-4 z-10 text-white">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="size-6 rounded-lg bg-[#B4833E] text-white flex items-center justify-center">
+                          <IconComp className="size-3.5" />
+                        </div>
+                        <span className="text-[11px] font-semibold text-[#DFC8A7]">
+                          {amenity.tagline}
                         </span>
                       </div>
-
-                      <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/70 backdrop-blur-md text-emerald-300 border border-emerald-400/40 text-[10px] font-bold">
-                        <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                        <span>Live & Active</span>
-                      </div>
-
-                      <div className="absolute bottom-4 left-4 right-4 z-10 text-white">
-                        <div className="flex items-center gap-2 mb-1">
-                          <div className="size-6 rounded-lg bg-[#B4833E] text-white flex items-center justify-center">
-                            <IconComp className="size-3.5" />
-                          </div>
-                          <span className="text-[11px] font-semibold text-[#DFC8A7]">
-                            {amenity.tagline}
-                          </span>
-                        </div>
-                        <h3 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-white leading-tight">
-                          {amenity.title}
-                        </h3>
-                      </div>
-                    </div>
-
-                    <div className="p-5 sm:p-6 space-y-2">
-                      <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                        {amenity.description}
-                      </p>
+                      <h3 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-white leading-tight">
+                        {amenity.title}
+                      </h3>
                     </div>
                   </div>
-                </FadeIn>
+
+                  <div className="p-5 sm:p-6 space-y-2">
+                    <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                      {amenity.description}
+                    </p>
+                  </div>
+                </div>
               )
             })}
-          </div>
+          </BentoGrid>
         </div>
       </div>
     </section>
