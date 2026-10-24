@@ -7,7 +7,6 @@ import { LegacySection } from "@/components/LegacySection"
 import { ProjectShowcase } from "@/components/ProjectShowcase"
 import { WhyReadyToLive } from "@/components/WhyReadyToLive"
 import { FloorPlanExplorer } from "@/components/FloorPlanExplorer"
-import { RealityShowcase } from "@/components/reality-showcase"
 import { ConversionFooter } from "@/components/ConversionFooter"
 import { MobileActionBar } from "@/components/MobileActionBar"
 import { VisitModal } from "@/components/visit-modal"
@@ -90,10 +89,7 @@ export default function Home() {
         {/* 6. Section 4: Interactive Floor Plan & Unit Explorer with Zoom Lightbox & Room Specs */}
         <FloorPlanExplorer />
 
-        {/* 7. Section 5: "Actual Site vs. Render" Reality Proof Showcase */}
-        <RealityShowcase onOpenVisitModal={() => handleOpenVisitModal()} />
-
-        {/* 8. Section 6: Surat Connectivity, EMI Calculator, WhatsApp Walk-Through Scheduler & Luxury Footer */}
+        {/* 7. Section 5: Surat Connectivity, EMI Calculator, WhatsApp Walk-Through Scheduler & Luxury Footer */}
         <ConversionFooter />
       </main>
 
